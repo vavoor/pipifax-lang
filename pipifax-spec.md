@@ -1,7 +1,7 @@
 # Pipifax - The Language
 
 Pipifax is a small procedural programming language. It was designed as a
-demo vehicle for a compiler construction class.
+demo vehicle for a compiler construction class at the [Duale Hochschule Baden-Württemberg](https://www.dhbw-stuttgart.de).
 
 ## Trivia
 
@@ -9,10 +9,7 @@ The [Wiktionary](https://de.wiktionary.org/wiki/Wiktionary:Hauptseite) defines [
 
 ## Language specification
 
-### Compilation units
-
-A Pipifax program is one file containing function definitions and
-global variable declarations.
+A Pipifax program is one file containing function definitions and the compiler construction tools, e.g., UTF-8 with Java-based tools, ASCII,global variable declarations.
 
 ### Encoding
 
@@ -20,9 +17,7 @@ The character encoding can be chosen to fit to the compiler construction tools, 
 
 ### Comments
 
-Comments start with the #-character and last until the end of the the compiler construction tools, e.g., UTF-8 with Java-based tools, ASCII,line.
-
-**Exmaple**
+Comments start with the #-character and last until the end of the line.
 
 ```
 # This is a comment line
@@ -31,15 +26,15 @@ var a int    # This is another comment
 
 ### Identifiers
 
-Identifiers for functions and variables consist of letters, digits, and underscores of arbitrary length. The first character must be a letter or underscore. Identifiers are case-sensitive.
+Identifiers for functions and variables consist of an arbitrary number of letters, digits, and underscores. The first character must be a letter or underscore. Identifiers are case-sensitive.
 
 ### Data types
 
 Pipifax has these data types:
 
 - signed 32-bit integers implemented as two's complement
-- 64-bit floating point numbers in the IEEE 754 encoding)
-- Strings of arbitrary length
+- 64-bit floating point numbers in the IEEE 754 encoding
+- Strings (see section Notes below)
 - Arrays of fixed length
 
 ```
@@ -139,6 +134,10 @@ A block is a sequence of statements and local variable declarations enclosed in 
 }
 ```
 
+### Local variable declarations
+
+Local variables are declared in the same way as global variables, except that the declaration happens inside of a block.
+
 ### Statements
 
 #### Assignment
@@ -159,7 +158,7 @@ A block is a sequence of statements and local variable declarations enclosed in 
 - Logical inversion (not, `!`) returning 1 of operand is false or 0 otherwise; negation (`-`). Double-to-integer case (`(int)`) and integer-to-double case (`(double)`. Note that inversion is defined for integers and negation is defined for integers and doubles.
 - Variables (`ab`), array accesses (`ab[i]`, `x[12][3454]`), literals (`3.14,0`,`"foo"`), function calls (`sqrt(2)`)
 
-Expressions can be grouped using parentheses. 
+Expressions can be grouped using parentheses.
 
 ### Scoping
 
@@ -212,3 +211,5 @@ The scope of a local variable is limited by the block in which it has been decla
 
 
 ## Notes
+
+- Strings are not specified in detail. This gives more freedom to choose a simple implementation, e.g., with respect to character set and length limitations.
