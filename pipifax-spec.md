@@ -12,27 +12,7 @@ The [Wiktionary](https://de.wiktionary.org/wiki/Wiktionary:Hauptseite) defines [
 ### Compilation units
 
 A Pipifax program is one file containing function definitions and
-global variable declarations. The order of function definitions and
-global variable declaration does not matter, i.e., a function can call
-functions and use global variables that are defined/declared before or
-after the function.
-
-**Example**
-
-```
-var a int   # Declaration of global variable a before its use in f1
-func f1() { # Definition of function f1 before its use in f2
-}
-func f2() { # Definition of function 2
-  f1()      # It's legal to call functions defined before
-  f3()      # It's legal to call functions defined later
-  a = 1     # It's legal to use global variabled declared before
-  b = 2     # It's legal to use global variabled declared later
-}
-func f3() { # Definition of function f3 after its use in f2
-}
-var b int   # Declaration of global variable b, after its use in f1
-```
+global variable declarations.
 
 ### Encoding
 
@@ -71,7 +51,7 @@ var ad [3][5] double    # ad is an array of 3 arrays of 5 doubles
 
 Like in C, boolean values are implemented as integers:
 
--  0 is interpreted as false
+- 0 is interpreted as false
 
 - not 0 is interpreted as true
 
@@ -92,8 +72,6 @@ var s string
 var a_r12 [12] string
 var xyz [2][3][4] double
 ```
-
-
 
 ### Function definition
 
@@ -138,6 +116,16 @@ func j() [12] double {}
 
 The function body is a block enclosed in curly brackets.
 
+Note that it is not possible to define functions inside of function bodies:
+
+```
+func f1() {
+    func f2() {}    # Illegal!
+}
+```
+
+
+
 ### Block
 
 A block is a sequence of statements and local variable declarations enclosed in curly brackets:
@@ -151,8 +139,6 @@ A block is a sequence of statements and local variable declarations enclosed in 
 }
 ```
 
-
-
 ### Statements
 
 #### Assignment
@@ -165,8 +151,64 @@ A block is a sequence of statements and local variable declarations enclosed in 
 
 ### Operators and precedence
 
-- Logical or: &&
+- Logical **or** (`||`) returns 1 (true) or 0 (false). The operands must be integers. Short-circuit evaluation is applied, i.e. if the first operand is true, the second is not evaluated.
+- Logical **and** (`&&`) returns 1 (true) or 0 (false). The operands must be integers. Short-circuit evaluation is applied, i.e. if the first operand is false, the second is not evaluated.
+- Comparison operators return 1 (true) or 0 (false). Numeric comparison operators are `<`, `<=`, `>`, `>=`, `==`, and `!=`. The comparison operator for strings (`<=>`) returns -1 if the first operand is lexicalically smaller than the second operator, 0 if the operands are lexically equals, and 1 of the first operand is lexically greater than the second operand (cf. `strcmp()`  function in C).
+- Addition (`+`) and subtraction (`-`) of numeric values (integer or double)
+- Multiplication (`*`) and division (`/`) of numeric values (integer and double)
+- Logical inversion (not, `!`) returning 1 of operand is false or 0 otherwise; negation (`-`). Note that inversion is defined for integers and negation is defined for integers and doubles.
+- Variables (`ab`), array accesses (`ab[i]`, `x[12][3454]`), literals (`3.14,0`,`"foo"`), function calls (`sqrt(2)`)
+
+Expressions can be grouped using parentheses. 
 
 ### Scoping
+
+Function names and variable names reside in different namespaces. It is possible to declare a variable with a name and a function with the same name:
+
+```
+var f double        # Declaration of global variable f
+func f() int {}     # Definition of function f
+```
+
+Global variables and functions reside in a global scope. The order of function definitions and global variable declaration does not matter, i.e., a function can call functions and use global variables that are defined/declared before or
+after the function.
+
+```
+var a int   # Declaration of global variable a before its use in f1
+func f1() { # Definition of function f1 before its use in f2
+}
+func f2() { # Definition of function 2
+  f1()      # It's legal to call functions defined before
+  f3()      # It's legal to call functions defined later
+  a = 1     # It's legal to use global variabled declared before
+  b = 2     # It's legal to use global variabled declared later
+}
+func f3() { # Definition of function f3 after its use in f2
+}
+var b int   # Declaration of global variable b, after its use in f1
+```
+
+The scope of a local variable is limited by the block in which it has been declared. It is visible only *after* its declaration.
+
+```
+{
+    {
+        a = 1        # Illegal! a is not visible before its declaration
+        var a int
+        a = 2        # a is declared and visible here
+
+    }  # Scope of a ends here
+    a = 3    # Illegal! a is not visible after containing block
+}
+```
+
+
+
+
+
+
+
+
+
 
 ## Notes
