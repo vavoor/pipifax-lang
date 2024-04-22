@@ -156,7 +156,7 @@ A block is a sequence of statements and local variable declarations enclosed in 
 - Comparison operators return 1 (true) or 0 (false). Numeric comparison operators are `<`, `<=`, `>`, `>=`, `==`, and `!=`. The comparison operator for strings (`<=>`) returns -1 if the first operand is lexicalically smaller than the second operator, 0 if the operands are lexically equals, and 1 of the first operand is lexically greater than the second operand (cf. `strcmp()`  function in C).
 - Addition (`+`) and subtraction (`-`) of numeric values (integer or double)
 - Multiplication (`*`) and division (`/`) of numeric values (integer and double)
-- Logical inversion (not, `!`) returning 1 of operand is false or 0 otherwise; negation (`-`). Note that inversion is defined for integers and negation is defined for integers and doubles.
+- Logical inversion (not, `!`) returning 1 of operand is false or 0 otherwise; negation (`-`). Double-to-integer case (`(int)`) and integer-to-double case (`(double)`. Note that inversion is defined for integers and negation is defined for integers and doubles.
 - Variables (`ab`), array accesses (`ab[i]`, `x[12][3454]`), literals (`3.14,0`,`"foo"`), function calls (`sqrt(2)`)
 
 Expressions can be grouped using parentheses. 
