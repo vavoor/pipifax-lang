@@ -1,7 +1,7 @@
 # Pipifax - The Language
 
 Pipifax is a small procedural programming language. It was designed as a
-demo vehicle for a compiler construction class at the [Duale Hochschule Baden-Württemberg](https://www.dhbw-stuttgart.de).
+demo vehicle for a compiler construction class at the [Duale Hochschule Baden-Württemberg in Stuttgart](https://www.dhbw-stuttgart.de).
 
 ## Trivia
 
@@ -14,6 +14,8 @@ A Pipifax program is one file containing function definitions and global variabl
 ### Encoding
 
 The character encoding can be chosen to fit the compiler construction tools, e.g., UTF-8 with Java-based tools, ASCII or ISO 8859-1 with flex/bison.
+
+Whitespace characters including end-of-line markers are ignored.
 
 ### Comments
 
@@ -32,10 +34,10 @@ Identifiers for functions and variables consist of an arbitrary number of letter
 
 Pipifax has these data types:
 
-- signed 32-bit integers implemented as two's complement
-- 64-bit floating point numbers in the IEEE 754 encoding
-- Strings (see section Notes below)
-- Arrays of fixed length (the first element is the element with index 0)
+- Signed 32-bit integers implemented as two's complement - keyword is `int`
+- 64-bit floating point numbers in the IEEE 754 encoding - keyword is `double`
+- Strings (see section Notes below) - keyword is `string`
+- Arrays of fixed length (the first element is the element with index 0) - indicated with square brackets (see example below)
 
 ```
 var i int               # i is a variable of type integer
@@ -52,9 +54,9 @@ Like in C, boolean values are implemented as integers:
 
 ### Literals
 
-- Integer literals: 0, 1, 122345. Note that leading zeros are not allowed (01 is illegal). Signs are treated as operators (-1, --2).
-- Double literals in scientific notation: 0.0, 0.1, 1.0, 2E2, 123e-12, 0.123e-1, 3.14E+12, 1.2e0. Note that signs are treated as operators (-1.2, -0.0).
-- String literals are enclosed with double quotes. They can span more than one line. Quotes in strings are escaped with a backslash, backslashes are escaped with a backslash, like in C: "string", "this is a \"string\" in quotes", "\\"
+- Integer literals: 0, 1, 122345. Note that leading zeros are not allowed (01 is illegal). Minus signs are treated as operators (-1, --2). Plus as sign operator is not allowed.
+- Double literals in scientific notation: 0.0, 0.1, 1.0, 2E2, 123e-12, 0.123e-1, 3.14E+12, 1.2e0. Note that minus signs are treated as operators (-1.2, -0.0). Plus as sign operator is not allowed.
+- String literals are enclosed in double quotes. They can span more than one line. Quotes in strings are escaped with a backslash. Backslashes are escaped with a backslash, like in C: "string", "this is a \"string\" in quotes", "\\\"
 
 ### Global variable declaration
 
@@ -78,7 +80,7 @@ Functions are defined with the keyword `func`:
 func f() {}
 ```
 
-Function parameters are declared in parentheses following the identifier:
+Function parameters are declared in parentheses following the function name:
 
 ```
 func f0() {}
@@ -174,9 +176,21 @@ Local variables are declared in the same way as global variables, except that th
 
 ### Statements
 
+All statements reside in function bodies. There are these kinds of statements
+
+- Assignments
+
+- Branching (`if`)
+
+- Iteration (`while`)
+
+- Function Calls
+
+There are no return statements.
+
 #### Assignment
 
-Assignment statements assign a value defined by an expression to a left value. Left values can be variables, parameters, return value, or array elements:
+Assignment statements assign a value defined by an expression to a left value. Left values can be variables, parameters, return values, or array elements:
 
 ```
 var g int
@@ -192,11 +206,9 @@ func f(p int) int {
 }
 ```
 
-
-
 #### Branching
 
-For branching, Pipifax has to two version of if-statements:
+For branching, Pipifax has two versions of if statements:
 
 ```
 if cond {
@@ -211,11 +223,11 @@ else {
 }
 ```
 
-
+The condition must be an expression evaluating to an integer. Zero is considered false, not zero is considered true.
 
 #### Iteration
 
-For iteration, there is a while-statement:
+For iteration, there is a while statement:
 
 ```
 while cond {
@@ -223,7 +235,7 @@ while cond {
 }
 ```
 
-
+The condition must be an expression evaluating to an integer. Zero is considered false, not zero is considered true.
 
 #### Function calls
 
@@ -234,8 +246,6 @@ func f() {
     print("Hello world!)    # Calling print ignoring possible return values
 }
 ```
-
-
 
 ### Operators and operator precedences
 
