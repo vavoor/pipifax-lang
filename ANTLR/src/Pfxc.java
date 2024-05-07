@@ -4,6 +4,9 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import java.io.IOException;
 
+/**
+ * The Pipifax compiler
+ */
 class Pfxc {
 
     public static void main(String[] args) {
