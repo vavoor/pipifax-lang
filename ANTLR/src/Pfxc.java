@@ -23,7 +23,7 @@ class Pfxc {
       PfxLexer lexer = new PfxLexer(CharStreams.fromFileName(this.inputFileName));
       PfxParser parser = new PfxParser(new CommonTokenStream(lexer));
       ParserRuleContext parseTree = parser.program();
-      AsmWriter asm = new AsmWriter(baseName());
+      AsmWriter asm = new AsmWriter(baseName() + ".s");
     }
     catch (IOException e) {
         System.err.println("Cannot open file");

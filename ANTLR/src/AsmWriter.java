@@ -5,6 +5,6 @@ class AsmWriter {
   private FileWriter output;
 
   public AsmWriter(String fname) throws IOException {
-    this.output = new FileWriter(fname + ".s");
+    this.output = new FileWriter(fname);
   }
 }
