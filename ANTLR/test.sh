@@ -1,6 +1,6 @@
 #! /usr/bin/bash
 
-ANTLR=antlr-4.13.1-complete.jar
+ANTLR=antlr-4.13.2-complete.jar
 
 cd $(dirname $0)/tst
 

@@ -10,4 +10,4 @@
 
 ### Running ANTLR
 
-`java -jar lib/antlr-4.13.1-complete.jar -visitor -no-listener Pfx.g4`
+`java -jar lib/antlr-4.13.2-complete.jar -visitor -no-listener Pfx.g4`

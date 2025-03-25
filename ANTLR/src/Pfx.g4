@@ -3,10 +3,10 @@ grammar Pfx;
 /* Grammar rules */
 
 program
-    : EOF
-    ;
+  : EOF
+  ;
 
 /* Lexer rules */
 
 Comment : '#' ~[\n\r]* -> skip ;
-Whitespace : [ \t\f\n\r]+ -> skip;
+Whitespace : [\p{White_Space}]+ -> skip;
