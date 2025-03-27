@@ -8,3 +8,6 @@ The Pipifax compiler is written in an incremental fashion. See
 [assignments.md](assignments.md) for the details. Each assignment adds
 to the functionality of the compiler. The example code for each assignment
 can be found on a corresponding branch in this repo.
+
+The target of the compiler is [RARS](https://github.com/TheThirdOne/rars),
+an emulator of the RISC-V instruction set.
