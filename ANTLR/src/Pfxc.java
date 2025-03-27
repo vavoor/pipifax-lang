@@ -26,6 +26,9 @@ class Pfxc {
       PfxParser parser = new PfxParser(new CommonTokenStream(lexer));
       ParserRuleContext parseTree = parser.program();
       AsmWriter asm = new AsmWriter(baseName() + ".s");
+
+      CodeGen gen = new CodeGen(asm);
+      parseTree.accept(gen);
     }
     catch (IOException e) {
       System.err.println("Cannot open file");

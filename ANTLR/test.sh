@@ -11,5 +11,6 @@ run() {
     $PFXC $1
 }
 
-run empty.pfx
-run comments.pfx
+for f in *.pfx; do
+  run $f
+done
