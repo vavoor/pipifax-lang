@@ -10,6 +10,7 @@ class Pfxc {
 
   public static void main(String[] args) {
     Pfxc pfxc = new Pfxc(args[0]);
+    pfxc.compile();
   }
 
   private String inputFileName;

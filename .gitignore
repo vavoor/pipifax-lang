@@ -4,6 +4,7 @@
 # Generated files
 ANTLR/gen
 ANTLR/dst
+ANTLR/tst/*.s
 
 # Log file
 *.log
