@@ -25,10 +25,18 @@ class Pfxc {
       PfxLexer lexer = new PfxLexer(CharStreams.fromFileName(this.inputFileName));
       PfxParser parser = new PfxParser(new CommonTokenStream(lexer));
       ParserRuleContext parseTree = parser.program();
-      AsmWriter asm = new AsmWriter(baseName() + ".s");
 
-      CodeGen gen = new CodeGen(asm);
-      parseTree.accept(gen);
+      int errors;
+      NameChecker nameChecker = new NameChecker();
+      parseTree.accept(nameChecker);
+      
+      errors = nameChecker.errors();
+      if (errors == 0) {
+        AsmWriter asm = new AsmWriter(baseName() + ".s");
+  
+        CodeGen gen = new CodeGen(asm);
+        parseTree.accept(gen);
+      }
     }
     catch (IOException e) {
       System.err.println("Cannot open file");

@@ -55,3 +55,9 @@ abc123:  .word 0
 
 .text
 ```
+
+## 3. Prevent duplicate variable names
+
+Add a semantic check to ensure global variables have a unique name, i.e.
+add a visitor that checks for duplicates. If duplicate names are discovered,
+an error message should be printed and no output file should be generated.
