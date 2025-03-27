@@ -9,7 +9,7 @@ import java.io.IOException;
 class Pfxc {
 
   public static void main(String[] args) {
-        Pfxc pfxc = new Pfxc(args[0]);
+    Pfxc pfxc = new Pfxc(args[0]);
   }
 
   private String inputFileName;
@@ -26,7 +26,10 @@ class Pfxc {
       AsmWriter asm = new AsmWriter(baseName() + ".s");
     }
     catch (IOException e) {
-        System.err.println("Cannot open file");
+      System.err.println("Cannot open file");
+    }
+    catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
