@@ -1,10 +1,13 @@
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.PrintStream;
+import java.io.FileNotFoundException;
 
 class AsmWriter {
-  private FileWriter output;
+  private PrintStream output;
 
-  public AsmWriter(String fname) throws IOException {
-    this.output = new FileWriter(fname);
+  public AsmWriter(String fname) throws FileNotFoundException {
+    this.output = new PrintStream(fname);
+    this.output.println("# Pipifax compiler V1.0");
+    this.output.println(".data");
+    this.output.println(".text");
   }
 }

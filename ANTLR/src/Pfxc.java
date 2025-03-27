@@ -2,6 +2,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 
 /**
  * The Pipifax compiler
