@@ -3,11 +3,15 @@ grammar Pfx;
 /* Grammar rules */
 
 program
-  : globalVariable* EOF
+  : (globalVariable | statement )* EOF
   ;
 
 globalVariable
   : 'var' Name type
+  ;
+
+statement
+  : Name '=' IntNumber
   ;
 
 type
@@ -39,6 +43,10 @@ LetterOrDigit
   
 Name
   : Letter LetterOrDigit*
+  ;
+
+IntNumber
+  : '0' | Digit1 Digit0*
   ;
 
 Comment

@@ -3,5 +3,5 @@ package ast;
 import util.AsmWriter;
 
 public abstract class Node {
-  public void generateCode(AsmWriter asm) {}
+  public abstract void generateCode(AsmWriter asm);
 }

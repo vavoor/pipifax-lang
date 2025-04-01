@@ -71,3 +71,40 @@ analysis and for the code generation.
 
 Create a visitor that creates the nodes of the AST. The AST needs to
 represent the program and the global variables.
+
+
+## 5. Assignment of constant numbers to variables
+
+After completion of this assigment, the compiler should be able to generate
+code for variable assignments of this kind:
+
+```
+# Assigning constant values to variables
+var i int
+i = 0
+
+var xy int
+xy = 2
+i = 123
+```
+
+The generated assembly code should look like this:
+
+```
+# Pipifax compiler V1.0
+
+.data
+i:	.word 0
+xy:	.word 0
+
+.text
+	la t1,i
+	li t2,0
+	sw t2,0(t1)
+	la t1,xy
+	li t2,2
+	sw t2,0(t1)
+	la t1,i
+	li t2,123
+	sw t2,0(t1)
+```

@@ -2,12 +2,15 @@ package ast;
 
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 import util.AsmWriter;
 
 public class Program extends Node {
   
   private Map<String, GlobalVariable> variables = new LinkedHashMap<>();
+  private List<Statement> stmts = new ArrayList<>();
 
   public boolean addGlobalVariable(GlobalVariable v) {
     String name = v.name();
@@ -18,11 +21,19 @@ public class Program extends Node {
     return true;
   }
 
+  public void addStatement(Statement stmt) {
+    stmts.add(stmt);
+  }
+
   public void generateCode(AsmWriter asm) {
     asm.dataSection();
     for (GlobalVariable v : this.variables.values()) {
       v.generateCode(asm);
     }
+    
     asm.textSection();
+    for (Statement stmt : stmts) {
+      stmt.generateCode(asm);
+    }
   }
 }

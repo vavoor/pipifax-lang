@@ -1,6 +1,8 @@
 import ast.Node;
 import ast.Program;
 import ast.GlobalVariable;
+import ast.Statement;
+import ast.Assignment;
 
 public class AstGen extends PfxBaseVisitor<Node> {
 
@@ -16,6 +18,11 @@ public class AstGen extends PfxBaseVisitor<Node> {
         this.errors++;
       }
     }
+
+    for (PfxParser.StatementContext s : ctx.statement()) {
+      Statement stmt = (Statement) s.accept(this);
+      program.addStatement(stmt);
+    }
     return program;
   }
 
@@ -23,6 +30,13 @@ public class AstGen extends PfxBaseVisitor<Node> {
   public Node visitGlobalVariable(PfxParser.GlobalVariableContext ctx) {
     GlobalVariable v = new GlobalVariable(ctx.Name().getText());
     return v;
+  }
+
+  @Override
+  public Node visitStatement(PfxParser.StatementContext ctx) {
+    String name = ctx.Name().getText();
+    int value = Integer.parseInt(ctx.IntNumber().getText());
+    return new Assignment(name, value);
   }
 
   public int errors() {
