@@ -37,6 +37,12 @@ class Pfxc {
         throw new CompileError();
       }
 
+      int errors;
+      errors = program.resolveNames();
+      if (errors > 0) {
+         throw new CompileError();
+      }
+
       AsmWriter asm = new AsmWriter(baseName() + ".s");
       program.generateCode(asm);
       

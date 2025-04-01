@@ -25,6 +25,15 @@ public class Program extends Node {
     stmts.add(stmt);
   }
 
+  public int resolveNames() {
+    int errors = 0;
+    for (Statement stmt : stmts) {
+      errors += stmt.resolveNames(this.variables);
+    }
+    return errors;
+  }
+
+  @Override
   public void generateCode(AsmWriter asm) {
     asm.dataSection();
     for (GlobalVariable v : this.variables.values()) {

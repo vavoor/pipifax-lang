@@ -108,3 +108,5 @@ xy:	.word 0
 	li t2,123
 	sw t2,0(t1)
 ```
+
+The compiler should also report an error if undeclared variables are used.

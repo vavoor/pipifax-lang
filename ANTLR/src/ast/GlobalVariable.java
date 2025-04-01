@@ -13,6 +13,7 @@ public class GlobalVariable extends Node {
     return this.name;
   }
 
+  @Override
   public void generateCode(AsmWriter asm) {
     asm.println(this.name + ":\t.word 0");
   }
