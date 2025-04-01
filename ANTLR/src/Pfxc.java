@@ -4,6 +4,10 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
+import util.AsmWriter;
+
+import ast.Program;
+
 /**
  * The Pipifax compiler
  */
@@ -26,17 +30,16 @@ class Pfxc {
       PfxParser parser = new PfxParser(new CommonTokenStream(lexer));
       ParserRuleContext parseTree = parser.program();
 
-      int errors;
-      NameChecker nameChecker = new NameChecker();
-      parseTree.accept(nameChecker);
-      
-      errors = nameChecker.errors();
-      if (errors == 0) {
-        AsmWriter asm = new AsmWriter(baseName() + ".s");
-  
-        CodeGen gen = new CodeGen(asm);
-        parseTree.accept(gen);
+      AstGen astgen = new AstGen();
+      Program program = (Program) parseTree.accept(astgen);
+
+      if (astgen.errors() > 0) {
+        throw new CompileError();
       }
+
+      AsmWriter asm = new AsmWriter(baseName() + ".s");
+      program.generateCode(asm);
+      
     }
     catch (IOException e) {
       System.err.println("Cannot open file");

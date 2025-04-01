@@ -1,7 +1,9 @@
+package util;
+
 import java.io.PrintStream;
 import java.io.FileNotFoundException;
 
-class AsmWriter {
+public class AsmWriter {
   private PrintStream output;
 
   public AsmWriter(String fname) throws FileNotFoundException {

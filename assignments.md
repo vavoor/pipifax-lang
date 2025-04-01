@@ -61,3 +61,13 @@ abc123:  .word 0
 Add a semantic check to ensure global variables have a unique name, i.e.
 add a visitor that checks for duplicates. If duplicate names are discovered,
 an error message should be printed and no output file should be generated.
+
+
+## 4. Create an abstract syntax tree
+
+Instead of generating code from the parse tree, we will create an abstract
+syntax tree (AST) from the parse tree and use this for the semantic
+analysis and for the code generation.
+
+Create a visitor that creates the nodes of the AST. The AST needs to
+represent the program and the global variables.

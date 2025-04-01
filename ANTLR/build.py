@@ -11,5 +11,5 @@ def cmd(c):
 
 cmd(f"java -jar lib/{antlr} -o gen -visitor -no-listener src/Pfx.g4")
 
-sources = "gen/*.java src/*.java"
+sources = "gen/*.java src/util/*.java src/ast/*.java src/*.java"
 cmd(f"javac -cp {classpath} -d dst {sources}")
