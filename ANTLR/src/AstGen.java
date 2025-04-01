@@ -1,8 +1,4 @@
-import ast.Node;
-import ast.Program;
-import ast.GlobalVariable;
-import ast.Statement;
-import ast.Assignment;
+import ast.*;
 
 public class AstGen extends PfxBaseVisitor<Node> {
 
@@ -33,10 +29,22 @@ public class AstGen extends PfxBaseVisitor<Node> {
   }
 
   @Override
-  public Node visitStatement(PfxParser.StatementContext ctx) {
+  public Node visitAssignmentStmt(PfxParser.AssignmentStmtContext ctx) {
     String name = ctx.Name().getText();
+    Expr rhs = (Expr) ctx.expr().accept(this);
+    return new Assignment(name, rhs);
+  }
+
+  @Override
+  public Node visitIntLiteralExpr(PfxParser.IntLiteralExprContext ctx) {
     int value = Integer.parseInt(ctx.IntNumber().getText());
-    return new Assignment(name, value);
+    return new IntLiteralExpr(value);
+  }
+
+  @Override
+  public Node visitVariableExpr(PfxParser.VariableExprContext ctx) {
+    String name = ctx.Name().getText();
+    return new VariableExpr(name);
   }
 
   public int errors() {

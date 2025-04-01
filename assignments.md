@@ -110,3 +110,40 @@ xy:	.word 0
 ```
 
 The compiler should also report an error if undeclared variables are used.
+
+## 6. Assignments of variable values
+
+Add the capability to assign variable values like in the following example:
+
+```
+var a int
+a = 42
+
+var b int
+b = a
+```
+
+The compiler should check whether all variables are declared and report
+corresponding error messages.
+
+The generated code could look like this:
+
+```
+# Pipifax compiler V1.0
+
+.data
+a:	.word 0
+b:	.word 0
+
+.text
+	li t2,42
+	la t1,a
+	sw t2,0(t1)
+	la t1,a
+	lw t2,0(t1)
+	la t1,b
+	sw t2,0(t1)
+```
+
+Note that the order of instructions or usage of registers can vary in your
+implementation.

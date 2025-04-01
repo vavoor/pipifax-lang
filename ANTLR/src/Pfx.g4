@@ -11,13 +11,17 @@ globalVariable
   ;
 
 statement
-  : Name '=' IntNumber
+  : Name '=' expr   # AssignmentStmt
   ;
 
 type
   : 'int'
   ;
 
+expr
+  : IntNumber # IntLiteralExpr
+  | Name      # VariableExpr
+  ;
 
 /* Lexer rules */
 

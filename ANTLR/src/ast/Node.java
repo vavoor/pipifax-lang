@@ -13,5 +13,6 @@ public abstract class Node {
     return 0;
   }
   
-  public abstract void generateCode(AsmWriter asm);
+  public  void generateCode(AsmWriter asm) {
+  }
 }

@@ -5,28 +5,31 @@ import util.AsmWriter;
 
 public class Assignment extends Statement {
   private String name;
-  private int value;
+  private Expr rhs;
   
   private GlobalVariable variable;
 
-  public Assignment(String name, int value) {
+  public Assignment(String name, Expr rhs) {
     this.name = name;
-    this.value = value;
+    this.rhs = rhs;
   }
 
   @Override
   public int resolveNames(Map<String, GlobalVariable> globals) {
+    int errors = this.rhs.resolveNames(globals);
+    
     this.variable = globals.get(this.name);
     if (this.variable == null) {
       System.err.println("Undeclared variable \'" + name + "\'");
-      return 1;
+      errors++;
     }
-    return 0;
+    return errors;
   }
 
   public void generateCode(AsmWriter asm) {
+    // We assume that values are handled in t2 and addresses are handled in t1
+    this.rhs.generateCode(asm);
     asm.println("\tla t1," + this.name);
-    asm.println("\tli t2," + this.value);
     asm.println("\tsw t2,0(t1)");
   }
 }
