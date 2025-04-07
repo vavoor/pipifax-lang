@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.Map;
 import util.AsmWriter;
 
 public class AddExpr extends Expr {
@@ -9,6 +10,11 @@ public class AddExpr extends Expr {
   public AddExpr(Expr left, Expr right) {
     this.left = left;
     this.right = right;
+  }
+
+  @Override
+  public int resolveNames(Map<String, GlobalVariable> globals, Map<String, Function> functions) {
+    return left.resolveNames(globals, functions) + right.resolveNames(globals, functions);
   }
 
   @Override

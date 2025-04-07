@@ -15,8 +15,8 @@ public class Assignment extends Statement {
   }
 
   @Override
-  public int resolveNames(Map<String, GlobalVariable> globals) {
-    int errors = this.rhs.resolveNames(globals);
+  public int resolveNames(Map<String, GlobalVariable> globals, Map<String, Function> functions) {
+    int errors = this.rhs.resolveNames(globals, functions);
     
     this.variable = globals.get(this.name);
     if (this.variable == null) {

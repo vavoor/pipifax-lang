@@ -10,7 +10,7 @@ import util.AsmWriter;
 public class Program extends Node {
   
   private Map<String, GlobalVariable> variables = new LinkedHashMap<>();
-  private List<Statement> stmts = new ArrayList<>();
+  private Map<String, Function> functions = new LinkedHashMap<>();
 
   public boolean addGlobalVariable(GlobalVariable v) {
     String name = v.name();
@@ -21,28 +21,42 @@ public class Program extends Node {
     return true;
   }
 
-  public void addStatement(Statement stmt) {
-    stmts.add(stmt);
+  public boolean addFunction(Function f) {
+    String name = f.name();
+    if (functions.put(name, f) != null) {
+      System.err.println("Funciton \'" + name + "\' is defined more than once.");
+      return false;
+    }
+    return true;
+  }
+
+  public Function function(String name) {
+    return this.functions.get(name);
   }
 
   public int resolveNames() {
     int errors = 0;
-    for (Statement stmt : stmts) {
-      errors += stmt.resolveNames(this.variables);
+    for (Function f : this.functions.values()) {
+      errors += f.resolveNames(this.variables, this.functions);
     }
     return errors;
   }
 
   @Override
   public void generateCode(AsmWriter asm) {
+    asm.textSection();
+    asm.println("\tjal main");
+    asm.println("\tli a7,10");
+    asm.println("\tecall");
+    asm.println("");
+    
+    for (Function f : this.functions.values()) {
+      f.generateCode(asm);
+    }
+    
     asm.dataSection();
     for (GlobalVariable v : this.variables.values()) {
       v.generateCode(asm);
-    }
-    
-    asm.textSection();
-    for (Statement stmt : stmts) {
-      stmt.generateCode(asm);
     }
   }
 }

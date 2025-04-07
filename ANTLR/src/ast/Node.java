@@ -8,7 +8,7 @@ public abstract class Node {
   /**
    * @return number of errors
    */
-  public int resolveNames(Map<String, GlobalVariable> globals) {
+  public int resolveNames(Map<String, GlobalVariable> globals, Map<String, Function> functions) {
     // Default implementation
     return 0;
   }

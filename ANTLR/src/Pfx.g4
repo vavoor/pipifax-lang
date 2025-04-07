@@ -3,15 +3,24 @@ grammar Pfx;
 /* Grammar rules */
 
 program
-  : (globalVariable | statement )* EOF
+  : (globalVariable | functionDefinition )* EOF
   ;
 
 globalVariable
   : 'var' Name type
   ;
 
+functionDefinition
+  : 'func' Name '(' ')' block
+  ;
+
+block
+  : '{' statement* '}'
+  ;
+
 statement
   : Name '=' expr   # AssignmentStmt
+  | Name '(' ')'    # CallStmt
   ;
 
 type

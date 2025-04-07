@@ -13,7 +13,7 @@ public class VariableExpr extends Expr {
   }
 
   @Override
-  public int resolveNames(Map<String, GlobalVariable> globals) {
+  public int resolveNames(Map<String, GlobalVariable> globals, Map<String, Function> functions) {
     this.variable = globals.get(this.name);
     if (this.variable == null) {
       System.err.println("Undeclared variable \'" + this.name + "\'");

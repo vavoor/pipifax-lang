@@ -164,3 +164,42 @@ b = 3 + a + 4
 ```
 
 You need to pay attention to the register usage!
+
+
+## 8. Adding functions
+
+In Pipifax, all statements are actually contained in functions. In this
+assigment, change the compiler so that a Pipifax program consists of
+functions definitions and global variable declarations, i.e. the
+assignment statement that was created earlier is now only allowed in a
+function body.
+
+In addition to the assignment, the compiler should also implement
+function calls.
+
+In particular, the compiler should support
+
+- Declaring functions without parameters and without return value
+- Calling functions without arguments
+- No local variables
+
+Note that the order of function definitions and global variable
+declarations does not matter. A function can call a function or access
+a global variabls that is defined/declared later in the program code.
+
+The compile should also check whether a function `main` exists and
+report an error if not. It should also generate code that `main` is
+called when the execution starts.
+
+```
+func main () {
+  f()
+}
+
+func f() {
+  a = 2
+}
+
+var a int
+
+```

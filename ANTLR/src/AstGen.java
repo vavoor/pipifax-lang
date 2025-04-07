@@ -15,9 +15,11 @@ public class AstGen extends PfxBaseVisitor<Node> {
       }
     }
 
-    for (PfxParser.StatementContext s : ctx.statement()) {
-      Statement stmt = (Statement) s.accept(this);
-      program.addStatement(stmt);
+    for (PfxParser.FunctionDefinitionContext fc : ctx.functionDefinition()) {
+      Function f = (Function) fc.accept(this);
+      if (!program.addFunction(f)) {
+        this.errors++;
+      }
     }
     return program;
   }
@@ -29,10 +31,33 @@ public class AstGen extends PfxBaseVisitor<Node> {
   }
 
   @Override
+  public Node visitFunctionDefinition(PfxParser.FunctionDefinitionContext ctx) {
+    String name = ctx.Name().getText();
+    Block block = (Block) ctx.block().accept(this);
+    return new Function(name, block);
+  }
+
+  @Override
+  public Node visitBlock(PfxParser.BlockContext ctx) {
+    Block block = new Block();
+    for (PfxParser.StatementContext s : ctx.statement()) {
+      Statement stmt = (Statement) s.accept(this);
+      block.addStmt(stmt);
+    }
+    return block;
+  }
+
+  @Override
   public Node visitAssignmentStmt(PfxParser.AssignmentStmtContext ctx) {
     String name = ctx.Name().getText();
     Expr rhs = (Expr) ctx.expr().accept(this);
     return new Assignment(name, rhs);
+  }
+
+  @Override
+  public Node visitCallStmt(PfxParser.CallStmtContext ctx) {
+    String name = ctx.Name().getText();
+    return new CallStmt(name);
   }
 
   @Override
