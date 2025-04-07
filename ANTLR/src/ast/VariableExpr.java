@@ -24,7 +24,7 @@ public class VariableExpr extends Expr {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    asm.println("\tla t1," + this.name);
-    asm.println("\tlw t2,0(t1)");
+    asm.println("\tla t2," + this.name);
+    asm.println("\tlw t1,0(t2)");
   }
 }

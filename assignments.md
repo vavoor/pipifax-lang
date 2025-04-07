@@ -136,13 +136,13 @@ a:	.word 0
 b:	.word 0
 
 .text
-	li t2,42
-	la t1,a
-	sw t2,0(t1)
-	la t1,a
-	lw t2,0(t1)
-	la t1,b
-	sw t2,0(t1)
+	li t1,42
+	la t2,a
+	sw t1,0(t2)
+	la t2,a
+	lw t1,0(t2)
+	la t2,b
+	sw t1,0(t2)
 ```
 
 Note that the order of instructions or usage of registers can vary in your

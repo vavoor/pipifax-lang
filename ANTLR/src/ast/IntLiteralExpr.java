@@ -11,6 +11,6 @@ public class IntLiteralExpr extends Expr {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    asm.println("\tli t2," + this.value);
+    asm.println("\tli t1," + this.value);
   }
 }

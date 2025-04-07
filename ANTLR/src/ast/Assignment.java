@@ -27,9 +27,9 @@ public class Assignment extends Statement {
   }
 
   public void generateCode(AsmWriter asm) {
-    // We assume that values are handled in t2 and addresses are handled in t1
+    // We assume that values are handled in t1 and addresses are handled in t2
     this.rhs.generateCode(asm);
-    asm.println("\tla t1," + this.name);
-    asm.println("\tsw t2,0(t1)");
+    asm.println("\tla t2," + this.name);
+    asm.println("\tsw t1,0(t2)");
   }
 }
