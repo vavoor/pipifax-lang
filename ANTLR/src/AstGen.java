@@ -36,6 +36,13 @@ public class AstGen extends PfxBaseVisitor<Node> {
   }
 
   @Override
+  public Node visitAddExpr(PfxParser.AddExprContext ctx) {
+    Expr left = (Expr) ctx.expr(0).accept(this);
+    Expr right = (Expr) ctx.expr(1).accept(this);
+    return new AddExpr(left, right);
+  }
+
+  @Override
   public Node visitIntLiteralExpr(PfxParser.IntLiteralExprContext ctx) {
     int value = Integer.parseInt(ctx.IntNumber().getText());
     return new IntLiteralExpr(value);

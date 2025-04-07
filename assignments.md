@@ -147,3 +147,20 @@ b:	.word 0
 
 Note that the order of instructions or usage of registers can vary in your
 implementation.
+
+
+## 7. Adding expressions
+
+Add the capability to add expressions. Pipifax code like this should be compiled
+into assembly code:
+
+```
+var a int
+var b int
+
+a = 1+2
+b = 3 + a + 4
+
+```
+
+You need to pay attention to the register usage!

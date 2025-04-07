@@ -19,7 +19,8 @@ type
   ;
 
 expr
-  : IntNumber # IntLiteralExpr
+  : expr '+' expr   # AddExpr
+  | IntNumber # IntLiteralExpr
   | Name      # VariableExpr
   ;
 
