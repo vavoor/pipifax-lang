@@ -6,20 +6,26 @@ import util.AsmWriter;
 public class LValueExpr extends Expr {
   private LValue lvalue;
   
-  private GlobalVariable variable;
-
   public LValueExpr(LValue lvalue) {
     this.lvalue = lvalue;
   }
 
   @Override
-  public int resolveNames(Map<String, GlobalVariable> globals, Map<String, Function> functions) {
-    return this.lvalue.resolveNames(globals, functions);
+  public int resolveFunctionNames(Map<String, Function> functions) {
+    int errors = this.lvalue.resolveFunctionNames(functions);
+    this.type = this.lvalue.type();
+    return errors;
+  }
+
+  @Override
+  public int calculateAndCheckTypes() {
+    this.type = this.lvalue.type();
+    return 0;
   }
 
   @Override
   public void generateCode(AsmWriter asm) {
-    //~ asm.println("\tla t1," + this.name);
-    //~ asm.println("\tlw t1,0(t1)");
+    this.lvalue.generateCode(asm);
+    asm.println("\tlw t1,0(t2)");
   }
 }

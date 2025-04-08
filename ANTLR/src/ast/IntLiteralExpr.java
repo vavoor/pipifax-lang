@@ -7,6 +7,7 @@ public class IntLiteralExpr extends Expr {
 
   public IntLiteralExpr(int value) {
     this.value = value;
+    this.type = IntType.instance();
   }
 
   @Override

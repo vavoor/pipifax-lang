@@ -8,12 +8,12 @@ public abstract class Node {
   /**
    * @return number of errors
    */
-  public int resolveNames(Map<String, GlobalVariable> globals, Map<String, Function> functions) {
+  public int resolveFunctionNames(Map<String, Function> functions) {
     // Default implementation
     return 0;
   }
 
-  public int checkTypes() {
+  public int calculateAndCheckTypes() {
     return 0;
   }
   

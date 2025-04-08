@@ -1,27 +1,35 @@
+import java.util.Map;
+import java.util.LinkedHashMap;
+
 import ast.*;
+
 
 public class AstGen extends PfxBaseVisitor<Node> {
 
   private int errors = 0;
 
+  private Map<String, GlobalVariable> variables = new LinkedHashMap<>();
+  private Map<String, Function> functions = new LinkedHashMap<>();
+
   @Override
   public Node visitProgram(PfxParser.ProgramContext ctx) {
-    Program program = new Program();
-
     for (PfxParser.GlobalVariableContext gv : ctx.globalVariable()) {
       GlobalVariable v = (GlobalVariable) gv.accept(this);
-      if (!program.addGlobalVariable(v)) {
+      if (this.variables.put(v.name(), v) != null) {
+        System.err.println("Global variable \'" + v.name() + "\' is declared more than once.");
         this.errors++;
       }
     }
 
     for (PfxParser.FunctionDefinitionContext fc : ctx.functionDefinition()) {
       Function f = (Function) fc.accept(this);
-      if (!program.addFunction(f)) {
+      if (this.functions.put(f.name(), f) != null) {
+        System.err.println("Function \'" + f.name() + "\' is defined more than once.");
         this.errors++;
       }
     }
-    return program;
+    
+    return new Program(variables, functions);
   }
 
   @Override
@@ -96,7 +104,12 @@ public class AstGen extends PfxBaseVisitor<Node> {
   @Override
   public Node visitNamedLValue(PfxParser.NamedLValueContext ctx) {
     String name = ctx.Name().getText();
-    return new NamedLValue(name);
+    Variable v = this.variables.get(name);
+    if (v == null) {
+      System.err.println("Variable \'" + name + "\' is not declared.");
+      errors++;
+    }
+    return new NamedLValue(name, v);
   }
 
   @Override

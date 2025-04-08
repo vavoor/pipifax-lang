@@ -2,21 +2,14 @@ package ast;
 
 import util.AsmWriter;
 
-public class GlobalVariable extends Node {
-  private String name;
-  private Type type;
+public class GlobalVariable extends Variable {
 
   public GlobalVariable(String name, Type type) {
-    this.name = name;
-    this.type = type;
+    super(name, type);
   }
-
-  public String name() {
-    return this.name;
-  }
-
+  
   @Override
   public void generateCode(AsmWriter asm) {
-    asm.println(this.name + ":\t.word 0");
+    asm.println(this.name() + ":\t.word 0");
   }
 }

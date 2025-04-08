@@ -8,4 +8,16 @@ public class IntType extends Type {
   public static Type instance() {
     return instance;
   }
+
+  public int size() {
+    return 4;
+  }
+
+  public boolean isInt() {
+    return true;
+  }
+
+  public boolean accepts(Type type) {
+    return type.isInt();
+  }
 }

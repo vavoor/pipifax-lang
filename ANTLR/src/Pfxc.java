@@ -37,14 +37,11 @@ class Pfxc {
         throw new CompileError();
       }
 
-      int errors;
-      errors = program.resolveNames();
-      if (errors > 0) {
+      if (program.resolveFunctionNames() > 0) {
          throw new CompileError();
       }
 
-      errors = program.checkTypes();
-      if (errors > 0) {
+      if (program.calculateAndCheckTypes() > 0) {
         throw new CompileError();
       }
       

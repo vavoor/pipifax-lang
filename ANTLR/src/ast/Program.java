@@ -9,44 +9,31 @@ import util.AsmWriter;
 
 public class Program extends Node {
   
-  private Map<String, GlobalVariable> variables = new LinkedHashMap<>();
-  private Map<String, Function> functions = new LinkedHashMap<>();
+  private Map<String, GlobalVariable> variables;
+  private Map<String, Function> functions;
 
-  public boolean addGlobalVariable(GlobalVariable v) {
-    String name = v.name();
-    if (variables.put(name, v) != null) {
-      System.err.println("Global variable \'" + name + "\' is declared more than once.");
-      return false;
-    }
-    return true;
-  }
-
-  public boolean addFunction(Function f) {
-    String name = f.name();
-    if (functions.put(name, f) != null) {
-      System.err.println("Funciton \'" + name + "\' is defined more than once.");
-      return false;
-    }
-    return true;
+  public Program(Map<String, GlobalVariable> variables, Map<String, Function> functions) {
+    this.variables = variables;
+    this.functions = functions;
   }
 
   public Function function(String name) {
     return this.functions.get(name);
   }
 
-  public int resolveNames() {
+  public int resolveFunctionNames() {
     int errors = 0;
     for (Function f : this.functions.values()) {
-      errors += f.resolveNames(this.variables, this.functions);
+      errors += f.resolveFunctionNames(this.functions);
     }
     return errors;
   }
 
   @Override
-  public int checkTypes() {
+  public int calculateAndCheckTypes() {
     int errors = 0;
     for (Function f : this.functions.values()) {
-      errors += f.checkTypes();
+      errors += f.calculateAndCheckTypes();
     }
     return errors;
   }

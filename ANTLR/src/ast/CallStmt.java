@@ -12,7 +12,7 @@ public class CallStmt extends Statement {
   }
 
   @Override
-  public int resolveNames(Map<String, GlobalVariable> globals, Map<String, Function> functions) {
+  public int resolveFunctionNames(Map<String, Function> functions) {
     this.function = functions.get(this.name);
     if (this.function == null) {
       System.err.println("Function \'" + this.name + "\' is called but not defined.");
@@ -22,7 +22,7 @@ public class CallStmt extends Statement {
   }
 
   @Override
-  public int checkTypes() {
+  public int calculateAndCheckTypes() {
     return 0;
   }
 

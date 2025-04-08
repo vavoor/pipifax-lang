@@ -13,8 +13,22 @@ public class AddExpr extends Expr {
   }
 
   @Override
-  public int resolveNames(Map<String, GlobalVariable> globals, Map<String, Function> functions) {
-    return left.resolveNames(globals, functions) + right.resolveNames(globals, functions);
+  public int resolveFunctionNames(Map<String, Function> functions) {
+    int errors = this.left.resolveFunctionNames(functions) + this.right.resolveFunctionNames(functions);
+    return errors;
+  }
+
+  public int calculateAndCheckTypes() {
+    int errors = this.left.calculateAndCheckTypes() + this.right.calculateAndCheckTypes();
+    if (this.left.type().isInt() && this.right.type().isInt()) {
+      this.type = IntType.instance();
+    }
+    else {
+      System.err.println("Incompatible types for arithmetic operation");
+      errors++;
+      this.type = new ErrorType();
+    }
+    return errors;
   }
 
   @Override

@@ -14,19 +14,19 @@ public class Block extends Node {
   }
 
   @Override
-  public int resolveNames(Map<String, GlobalVariable> globals, Map<String, Function> functions) {
+  public int resolveFunctionNames(Map<String, Function> functions) {
     int errors = 0;
     for (Statement s : this.statements) {
-      errors += s.resolveNames(globals, functions);
+      errors += s.resolveFunctionNames(functions);
     }
     return errors;
   }
 
   @Override
-  public int checkTypes() {
+  public int calculateAndCheckTypes() {
      int errors = 0;
     for (Statement s : this.statements) {
-      errors += s.checkTypes();
+      errors += s.calculateAndCheckTypes();
     }
     return errors;
   }

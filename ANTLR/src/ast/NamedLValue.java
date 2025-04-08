@@ -1,23 +1,19 @@
 package ast;
 
 import java.util.Map;
+import util.AsmWriter;
 
 public class NamedLValue extends LValue {
   private String name;
-  private GlobalVariable variable;
+  private Variable variable;
 
-  public NamedLValue(String name) {
+  public NamedLValue(String name, Variable v) {
     this.name = name;
+    this.variable = v;
   }
 
-  @Override
-  public int resolveNames(Map<String, GlobalVariable> globals, Map<String, Function> functions) {
-    this.variable = globals.get(this.name);
-    if (this.variable == null) {
-      System.err.println("Undeclared variable \'" + name + "\'");
-     return 1;
-    }
-    return 0;
+  public Type type() {
+    return this.variable.type();
   }
 
   @Override

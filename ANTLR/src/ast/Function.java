@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.Map;
 import util.AsmWriter;
 
 public class Function extends Node {
@@ -16,8 +17,13 @@ public class Function extends Node {
   }
 
   @Override
-  public int checkTypes() {
-    return this.block.checkTypes();
+  public int resolveFunctionNames(Map<String, Function> functions) {
+    return 0; // TODO
+  }
+  
+  @Override
+  public int calculateAndCheckTypes() {
+    return this.block.calculateAndCheckTypes();
   }
 
   @Override
