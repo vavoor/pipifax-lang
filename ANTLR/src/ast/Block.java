@@ -23,7 +23,7 @@ public class Block extends Node {
   }
 
   @Override
-  public  void generateCode(AsmWriter asm) {
+  public void generateCode(AsmWriter asm) {
     for (Statement s : this.statements) {
       s.generateCode(asm);
     }
