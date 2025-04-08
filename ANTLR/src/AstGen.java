@@ -26,7 +26,9 @@ public class AstGen extends PfxBaseVisitor<Node> {
 
   @Override
   public Node visitGlobalVariable(PfxParser.GlobalVariableContext ctx) {
-    GlobalVariable v = new GlobalVariable(ctx.Name().getText());
+    String name = ctx.Name().getText();
+    Type type = (Type) ctx.type().accept(this);
+    GlobalVariable v = new GlobalVariable(name, type);
     return v;
   }
 
@@ -77,6 +79,18 @@ public class AstGen extends PfxBaseVisitor<Node> {
   public Node visitVariableExpr(PfxParser.VariableExprContext ctx) {
     String name = ctx.Name().getText();
     return new VariableExpr(name);
+  }
+
+  @Override
+  public Node visitIntType(PfxParser.IntTypeContext ctx) {
+    return new IntType();
+  }
+
+  @Override
+  public Node visitArrayType(PfxParser.ArrayTypeContext ctx) {
+    int dim = Integer.parseInt(ctx.IntNumber().getText());
+    Type type = (Type) ctx.type().accept(this);
+    return new ArrayType(dim, type);
   }
 
   public int errors() {

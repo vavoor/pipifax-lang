@@ -24,7 +24,8 @@ statement
   ;
 
 type
-  : 'int'
+  : 'int'   # IntType
+  | '[' IntNumber ']' type  # ArrayType
   ;
 
 expr

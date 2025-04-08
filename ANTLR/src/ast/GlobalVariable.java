@@ -4,9 +4,11 @@ import util.AsmWriter;
 
 public class GlobalVariable extends Node {
   private String name;
+  private Type type;
 
-  public GlobalVariable(String name) {
+  public GlobalVariable(String name, Type type) {
     this.name = name;
+    this.type = type;
   }
 
   public String name() {
