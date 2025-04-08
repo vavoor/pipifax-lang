@@ -16,15 +16,8 @@ public class Assignment extends Statement {
 
   @Override
   public int resolveNames(Map<String, GlobalVariable> globals, Map<String, Function> functions) {
-    //~ int errors = this.rhs.resolveNames(globals, functions);
-    
-    //~ this.variable = globals.get(this.name);
-    //~ if (this.variable == null) {
-      //~ System.err.println("Undeclared variable \'" + name + "\'");
-      //~ errors++;
-    //~ }
-    //~ return errors;
-    return 0;
+    int errors = this.lvalue.resolveNames(globals, functions) + this.rhs.resolveNames(globals, functions);
+    return errors;
   }
 
   public void generateCode(AsmWriter asm) {
