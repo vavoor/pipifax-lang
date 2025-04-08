@@ -203,3 +203,32 @@ func f() {
 var a int
 
 ```
+
+## 9. Adding arrays
+
+In addition to integeer types, the compiler should support arrays of integers,
+e.g.
+
+```
+var i int
+var a [3] int
+var aa [3] int
+
+func main() {
+  i = 1
+  a[0] = 0
+  a[i] = i
+  a[1+i] = 2 + a[0]
+  aa = a
+}
+
+```
+
+This requires a number of semantical checks:
+
+- In an assignment, types need to be compatible
+- The dimension of an array must be a positive constant integer numbers
+- The index of an array must be an integer numbers
+
+The grammar and the code generator need to support arrays on the lefts side
+and on the right side of an assignment.
