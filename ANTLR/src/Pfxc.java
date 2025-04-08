@@ -43,6 +43,11 @@ class Pfxc {
          throw new CompileError();
       }
 
+      errors = program.checkTypes();
+      if (errors > 0) {
+        throw new CompileError();
+      }
+      
       if (program.function("main") == null) {
         System.err.println("No main function defined.");
         throw new CompileError();

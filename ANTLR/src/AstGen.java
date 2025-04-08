@@ -83,7 +83,7 @@ public class AstGen extends PfxBaseVisitor<Node> {
 
   @Override
   public Node visitIntType(PfxParser.IntTypeContext ctx) {
-    return new IntType();
+    return IntType.instance();
   }
 
   @Override

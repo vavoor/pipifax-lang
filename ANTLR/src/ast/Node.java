@@ -12,6 +12,10 @@ public abstract class Node {
     // Default implementation
     return 0;
   }
+
+  public int checkTypes() {
+    return 0;
+  }
   
   public  void generateCode(AsmWriter asm) {
   }

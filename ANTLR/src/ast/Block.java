@@ -23,6 +23,15 @@ public class Block extends Node {
   }
 
   @Override
+  public int checkTypes() {
+     int errors = 0;
+    for (Statement s : this.statements) {
+      errors += s.checkTypes();
+    }
+    return errors;
+  }
+
+  @Override
   public  void generateCode(AsmWriter asm) {
     for (Statement s : this.statements) {
       s.generateCode(asm);

@@ -19,4 +19,9 @@ public class CallStmt extends Statement {
     }
     return 0;
   }
+
+  @Override
+  public int checkTypes() {
+    return 0;
+  }
 }

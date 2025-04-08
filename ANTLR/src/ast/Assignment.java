@@ -20,6 +20,11 @@ public class Assignment extends Statement {
     return errors;
   }
 
+  @Override
+  public int checkTypes() {
+    return 0;
+  }
+
   public void generateCode(AsmWriter asm) {
     // We assume that values are handled in t1 and addresses are handled in t2
     //~ this.rhs.generateCode(asm);

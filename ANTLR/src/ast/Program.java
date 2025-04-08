@@ -43,6 +43,15 @@ public class Program extends Node {
   }
 
   @Override
+  public int checkTypes() {
+    int errors = 0;
+    for (Function f : this.functions.values()) {
+      errors += f.checkTypes();
+    }
+    return errors;
+  }
+
+  @Override
   public void generateCode(AsmWriter asm) {
     asm.textSection();
     asm.println("\tjal main");

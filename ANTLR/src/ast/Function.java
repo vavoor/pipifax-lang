@@ -16,6 +16,11 @@ public class Function extends Node {
   }
 
   @Override
+  public int checkTypes() {
+    return this.block.checkTypes();
+  }
+
+  @Override
   public  void generateCode(AsmWriter asm) {
     asm.println("\n# Function " + this.name);
     asm.println(this.name + ":");
