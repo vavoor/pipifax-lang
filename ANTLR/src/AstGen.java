@@ -51,9 +51,9 @@ public class AstGen extends PfxBaseVisitor<Node> {
 
   @Override
   public Node visitAssignmentStmt(PfxParser.AssignmentStmtContext ctx) {
-    String name = ctx.Name().getText();
+    LValue lvalue = (LValue) ctx.lvalue().accept(this);
     Expr rhs = (Expr) ctx.expr().accept(this);
-    return new Assignment(name, rhs);
+    return new Assignment(lvalue, rhs);
   }
 
   @Override
@@ -92,6 +92,20 @@ public class AstGen extends PfxBaseVisitor<Node> {
     Type type = (Type) ctx.type().accept(this);
     return new ArrayType(dim, type);
   }
+
+  @Override
+  public Node visitNamedLValue(PfxParser.NamedLValueContext ctx) {
+    String name = ctx.Name().getText();
+    return new NamedLValue(name);
+  }
+
+  @Override
+  public Node visitIndexedLValue(PfxParser.IndexedLValueContext ctx) {
+    LValue lvalue = (LValue) ctx.lvalue().accept(this);
+    Expr index = (Expr) ctx.expr().accept(this);
+    return new IndexedLValue(lvalue, index);
+  }
+  
 
   public int errors() {
     return this.errors;

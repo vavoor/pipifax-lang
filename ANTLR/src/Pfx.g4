@@ -19,12 +19,17 @@ block
   ;
 
 statement
-  : Name '=' expr   # AssignmentStmt
-  | Name '(' ')'    # CallStmt
+  : lvalue '=' expr   # AssignmentStmt
+  | Name '(' ')'      # CallStmt
   ;
 
+lvalue
+  : Name                # NamedLValue
+  | lvalue '[' expr ']' # IndexedLValue
+  ;
+  
 type
-  : 'int'   # IntType
+  : 'int'                   # IntType
   | '[' IntNumber ']' type  # ArrayType
   ;
 
