@@ -19,4 +19,9 @@ public class NamedLValue extends LValue {
     }
     return 0;
   }
+
+  @Override
+  public void generateCode(AsmWriter asm) {
+    asm.println("\tla t2," + this.name);
+  }
 }

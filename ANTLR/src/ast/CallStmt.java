@@ -1,6 +1,7 @@
 package ast;
 
 import java.util.Map;
+import util.AsmWriter;
 
 public class CallStmt extends Statement {
   private String name;
@@ -23,5 +24,10 @@ public class CallStmt extends Statement {
   @Override
   public int checkTypes() {
     return 0;
+  }
+
+  @Override
+  public void generateCode(AsmWriter asm) {
+    asm.println("\tjal " + this.name);
   }
 }
