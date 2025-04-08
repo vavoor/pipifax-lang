@@ -21,8 +21,8 @@ public class AddExpr extends Expr {
   public void generateCode(AsmWriter asm) {
     // We use t3 to store the value of the left expression, as t2 is used for addresses
     this.left.generateCode(asm);
-    asm.println("\tmv t3,t1");
+    asm.println("\tmv t2,t1");
     this.right.generateCode(asm);
-    asm.println("\tadd t1,t3,t1");
+    asm.println("\tadd t1,t2,t1");
   }
 }
