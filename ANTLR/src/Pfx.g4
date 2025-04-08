@@ -35,8 +35,8 @@ type
 
 expr
   : expr '+' expr   # AddExpr
-  | IntNumber # IntLiteralExpr
-  | Name      # VariableExpr
+  | IntNumber       # IntLiteralExpr
+  | lvalue          # LValueExpr
   ;
 
 /* Lexer rules */

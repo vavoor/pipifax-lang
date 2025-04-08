@@ -76,9 +76,9 @@ public class AstGen extends PfxBaseVisitor<Node> {
   }
 
   @Override
-  public Node visitVariableExpr(PfxParser.VariableExprContext ctx) {
-    String name = ctx.Name().getText();
-    return new VariableExpr(name);
+  public Node visitLValueExpr(PfxParser.LValueExprContext ctx) {
+    LValue lvalue = (LValue) ctx.lvalue().accept(this);
+    return new LValueExpr(lvalue);
   }
 
   @Override
