@@ -24,6 +24,20 @@ public class IndexedLValue extends LValue {
   }
 
   @Override
+  public int calculateAndCheckTypes() {
+    int errors = this.index.calculateAndCheckTypes() + this.base.calculateAndCheckTypes();
+    if (!this.index.type().isInt()) {
+      System.err.println("Index must be integer type");
+      errors++;
+    }
+    if (!this.base.type().isArray()) {
+      System.err.println("Must be array type");
+      errors++;
+    }
+    return errors;
+  }
+
+  @Override
   public void generateCode(AsmWriter asm) {
     this.index.generateCode(asm);
     

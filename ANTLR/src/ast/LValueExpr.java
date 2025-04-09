@@ -20,14 +20,23 @@ public class LValueExpr extends Expr {
 
   @Override
   public int calculateAndCheckTypes() {
+    int errors = this.lvalue.calculateAndCheckTypes();
     this.type = this.lvalue.type();
-    return 0;
+    return errors;
   }
 
   @Override
   public void generateCode(AsmWriter asm) {
-    this.lvalue.generateCode(asm);
-    this.register = this.lvalue.address();
-    asm.println("\tlw " + this.register + ",0(" + this.register +")");
+    if (this.type.isInt()) {
+      this.lvalue.generateCode(asm);
+      this.register = this.lvalue.address();
+      asm.println("\tlw " + this.register + ",0(" + this.register +")");
+    }
+    else if (this.type.isArray()) {
+      throw new RuntimeException("Not yet implemented");
+    }
+    else {
+      throw new RuntimeException("Must not happend");
+    }
   }
 }
