@@ -31,10 +31,10 @@ public class Assignment extends Statement {
   }
 
   public void generateCode(AsmWriter asm) {
-    // We assume that values are handled in t1 and addresses are handled in t2
-    asm.println("# Assignment");
-    //~ this.rhs.generateCode(asm);
-    //~ asm.println("\tla t2," + this.name);
-    //~ asm.println("\tsw t1,0(t2)");
+    this.rhs.generateCode(asm);
+    this.lvalue.generateCode(asm);
+    asm.println("\tsw " + this.rhs.result() + ",0(" + this.lvalue.address() + ")");
+    this.rhs.result().release();
+    this.lvalue.address().release();
   }
 }

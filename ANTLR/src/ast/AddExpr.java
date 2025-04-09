@@ -34,8 +34,9 @@ public class AddExpr extends Expr {
   @Override
   public void generateCode(AsmWriter asm) {
     this.left.generateCode(asm);
-    asm.println("\tmv t2,t1");
     this.right.generateCode(asm);
-    asm.println("\tadd t1,t2,t1");
+    asm.println("\tadd " + this.left.result() + "," + this.left.result() + "," + this.right.result());
+    this.register = this.left.result();
+    this.right.result().release();
   }
 }

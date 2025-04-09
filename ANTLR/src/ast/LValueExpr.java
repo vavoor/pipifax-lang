@@ -2,6 +2,7 @@ package ast;
 
 import java.util.Map;
 import util.AsmWriter;
+import util.Registers;
 
 public class LValueExpr extends Expr {
   private LValue lvalue;
@@ -26,6 +27,7 @@ public class LValueExpr extends Expr {
   @Override
   public void generateCode(AsmWriter asm) {
     this.lvalue.generateCode(asm);
-    asm.println("\tlw t1,0(t2)");
+    this.register = this.lvalue.address();
+    asm.println("\tlw " + this.register + ",0(" + this.register +")");
   }
 }

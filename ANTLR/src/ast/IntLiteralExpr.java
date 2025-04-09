@@ -1,6 +1,7 @@
 package ast;
 
 import util.AsmWriter;
+import util.Registers;
 
 public class IntLiteralExpr extends Expr {
   private int value;
@@ -12,6 +13,7 @@ public class IntLiteralExpr extends Expr {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    asm.println("\tli t1," + this.value);
+    this.register = Registers.acquire();
+    asm.println("\tli " + this.register + "," + this.value);
   }
 }

@@ -2,6 +2,7 @@ package ast;
 
 import java.util.Map;
 import util.AsmWriter;
+import util.Registers;
 
 public class NamedLValue extends LValue {
   private String name;
@@ -18,6 +19,7 @@ public class NamedLValue extends LValue {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    asm.println("\tla t2," + this.name);
+    this.address = Registers.acquire();
+    asm.println("\tla " + this.address + "," + this.name);
   }
 }

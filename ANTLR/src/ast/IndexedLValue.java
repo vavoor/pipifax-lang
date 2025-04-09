@@ -2,6 +2,7 @@ package ast;
 
 import java.util.Map;
 import util.AsmWriter;
+import util.Registers;
 
 public class IndexedLValue extends LValue {
   private LValue base;
@@ -24,10 +25,17 @@ public class IndexedLValue extends LValue {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    // TODO
     this.index.generateCode(asm);
-    asm.println("\tli t2," + this.base.type().size());
-    asm.println("\tmul t1,t1,t2");
+    
+    Registers.Register incr = Registers.acquire();
+    ArrayType a = (ArrayType) this.base.type();
+    asm.println("\tli " + incr + "," + a.baseType().size());
+    asm.println("\tmul " + this.index.result() + "," + this.index.result() + "," + incr);
+    incr.release();
+
     this.base.generateCode(asm);
+    asm.println("\tadd " + this.index.result() + "," + this.base.address() + "," + this.index.result());
+    this.address = this.index.result();
+    this.base.address().release();
   }
 }
