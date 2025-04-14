@@ -30,7 +30,7 @@ public class LValueExpr extends Expr {
     if (this.type.isInt()) {
       this.lvalue.generateCode(asm);
       this.register = this.lvalue.address();
-      asm.println("\tlw " + this.register + ",0(" + this.register +")");
+      asm.lw(this.register, this.register);
     }
     else if (this.type.isArray()) {
       throw new RuntimeException("Not yet implemented");

@@ -41,9 +41,9 @@ public class Program extends Node {
   @Override
   public void generateCode(AsmWriter asm) {
     asm.textSection();
-    asm.println("\tjal main");
-    asm.println("\tli a7,10");
-    asm.println("\tecall");
+    asm.jal("main");
+    asm.instr("li a7,10");
+    asm.instr("ecall");
     asm.println("");
     
     for (Function f : this.functions.values()) {

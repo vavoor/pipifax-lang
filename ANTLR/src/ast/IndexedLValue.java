@@ -43,12 +43,12 @@ public class IndexedLValue extends LValue {
     
     Registers.Register incr = Registers.acquire();
     ArrayType a = (ArrayType) this.base.type();
-    asm.println("\tli " + incr + "," + a.baseType().size());
-    asm.println("\tmul " + this.index.result() + "," + this.index.result() + "," + incr);
+    asm.li(incr, a.baseType().size());
+    asm.mul(this.index.result(), this.index.result(), incr);
     incr.release();
 
     this.base.generateCode(asm);
-    asm.println("\tadd " + this.index.result() + "," + this.base.address() + "," + this.index.result());
+    asm.add(this.index.result(), this.base.address(), this.index.result());
     this.address = this.index.result();
     this.base.address().release();
   }

@@ -14,6 +14,6 @@ public class IntLiteralExpr extends Expr {
   @Override
   public void generateCode(AsmWriter asm) {
     this.register = Registers.acquire();
-    asm.println("\tli " + this.register + "," + this.value);
+    asm.li(this.register, this.value);
   }
 }

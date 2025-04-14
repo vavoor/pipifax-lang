@@ -20,6 +20,6 @@ public class NamedLValue extends LValue {
   @Override
   public void generateCode(AsmWriter asm) {
     this.address = Registers.acquire();
-    asm.println("\tla " + this.address + "," + this.name);
+    asm.la(this.address, this.name);
   }
 }

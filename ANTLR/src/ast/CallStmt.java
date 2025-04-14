@@ -28,6 +28,6 @@ public class CallStmt extends Statement {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    asm.println("\tjal " + this.name);
+    asm.jal(this.name);
   }
 }

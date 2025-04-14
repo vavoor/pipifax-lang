@@ -28,13 +28,13 @@ public class Function extends Node {
 
   @Override
   public  void generateCode(AsmWriter asm) {
-    asm.println("\n# Function " + this.name);
-    asm.println(this.name + ":");
-    asm.println("\taddi sp,sp,-4");
-    asm.println("\tsw ra,0(sp)");
+    asm.comment("Function " + this.name);
+    asm.label(this.name);
+    asm.instr("addi sp,sp,-4");
+    asm.instr("sw ra,0(sp)");
     block.generateCode(asm);
-    asm.println("\tlw ra,0(sp)");
-    asm.println("\taddi sp,sp,4");
-    asm.println("\tret");
+    asm.instr("lw ra,0(sp)");
+    asm.instr("addi sp,sp,4");
+    asm.ret();
   }
 }

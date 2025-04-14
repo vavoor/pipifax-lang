@@ -34,7 +34,7 @@ public class Assignment extends Statement {
     if (this.rhs.type().isInt()) {
       this.rhs.generateCode(asm);
       this.lvalue.generateCode(asm);
-      asm.println("\tsw " + this.rhs.result() + ",0(" + this.lvalue.address() + ")");
+      asm.sw(this.rhs.result(), this.lvalue.address());
       this.rhs.result().release();
       this.lvalue.address().release();
     }
