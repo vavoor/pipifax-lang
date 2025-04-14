@@ -26,6 +26,16 @@ public class Registers {
       new Register("s11")
     };
   }
+
+  public static final Register sp = new Register("sp");
+  public static final Register a0 = new Register("a0");
+  public static final Register a1 = new Register("a1");
+  public static final Register a2 = new Register("a2");
+  public static final Register a3 = new Register("a3");
+  public static final Register a4 = new Register("a4");
+  public static final Register a5 = new Register("a5");
+  public static final Register a6 = new Register("a6");
+  public static final Register a7 = new Register("a7");
   
   public static class Register {
     private String name;

@@ -23,6 +23,10 @@ public class AsmWriter {
     this.output.println(s);
   }
 
+  public void mv(Registers.Register rd, Registers.Register rs) {
+    instr("mv " + rd + "," + rs);
+  }
+  
   public void la(Registers.Register r, String symbol) {
     instr("la " + r + "," + symbol);
   }

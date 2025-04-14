@@ -2,6 +2,7 @@ package ast;
 
 import java.util.Map;
 import util.AsmWriter;
+import util.Registers;
 
 public class Assignment extends Statement {
   private LValue lvalue;
@@ -39,7 +40,10 @@ public class Assignment extends Statement {
       this.lvalue.address().release();
     }
     else if (this.rhs.type().isArray()) {
-      throw new RuntimeException("Not yet implemented"); // TODO
+      asm.mv(Registers.a0, this.lvalue.address());
+      asm.mv(Registers.a1, this.rhs.result());
+      asm.li(Registers.a2, this.rhs.type().size());
+      asm.jal("__memcpy"); // TODO: provide an implementation of __memcpy
     }
     else {
       throw new RuntimeException("Must not happen");
