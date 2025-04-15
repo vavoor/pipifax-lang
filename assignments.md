@@ -28,7 +28,7 @@ produces
 
 ```
 
-## 2. Compile global variables of type int
+## 2. Global variables of type int
 
 Enhance the compiler to accept global variables of type `int` and generate
 assembly output.
@@ -56,14 +56,14 @@ abc123:  .word 0
 .text
 ```
 
-## 3. Prevent duplicate variable names
+## 3. Name checks to prevent duplicate variable names
 
 Add a semantic check to ensure global variables have a unique name, i.e.
 add a visitor that checks for duplicates. If duplicate names are discovered,
 an error message should be printed and no output file should be generated.
 
 
-## 4. Create an abstract syntax tree
+## 4. Abstract syntax tree
 
 Instead of generating code from the parse tree, we will create an abstract
 syntax tree (AST) from the parse tree and use this for the semantic
@@ -149,7 +149,7 @@ Note that the order of instructions or usage of registers can vary in your
 implementation.
 
 
-## 7. Adding expressions
+## 7. Addition
 
 Add the capability to add expressions. Pipifax code like this should be compiled
 into assembly code:
@@ -166,7 +166,7 @@ b = 3 + a + 4
 You need to pay attention to the register usage!
 
 
-## 8. Adding functions
+## 8. Functions without parameters
 
 In Pipifax, all statements are actually contained in functions. In this
 assigment, change the compiler so that a Pipifax program consists of
@@ -204,7 +204,7 @@ var a int
 
 ```
 
-## 9. Adding arrays
+## 9. Arrays
 
 In addition to integeer types, the compiler should support arrays of integers,
 e.g.
@@ -245,3 +245,30 @@ e.g.
    yet.
 3. Add a type to each expression and a type calculator.
 4. Finally, add the arrays.
+
+
+## 10. Local variables
+
+Functions can contain local variables. Unlike global variables, local
+variables must have been declared before use.
+
+This is legal code:
+
+```
+func main() {
+  var l int
+
+  l = 1
+  g = l + l + 2
+}
+var g int
+```
+
+This is illegal:
+
+```
+func main() {
+  a = 1
+  var a int
+}
+```
