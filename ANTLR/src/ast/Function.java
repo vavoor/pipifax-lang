@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.Map;
 import util.AsmWriter;
 
 public class Function extends Node {
@@ -13,6 +14,10 @@ public class Function extends Node {
 
   public String name() {
     return this.name;
+  }
+
+  public int resolveNames(Map<String, GlobalVariable> globals, Map<String, Function> functions) {
+    return this.block.resolveNames(globals, functions);
   }
 
   @Override
