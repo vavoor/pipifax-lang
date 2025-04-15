@@ -232,3 +232,16 @@ This requires a number of semantical checks:
 
 The grammar and the code generator need to support arrays on the lefts side
 and on the right side of an assignment.
+
+As assignments of arrays is allowed in Pipifax, we need to decide how array
+values are represented. Hint: It's the base address of the array.
+
+When implementing these features, it's adviceable to proceed in small steps,
+e.g.
+
+1. Introduce types (i.e. a Type class in the AST) with IntType as only
+   possible types
+2. Add lvalues and lvalue expressions, but only allow names - no arrays
+   yet.
+3. Add a type to each expression and a type calculator.
+4. Finally, add the arrays.
