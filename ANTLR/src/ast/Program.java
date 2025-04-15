@@ -1,30 +1,39 @@
 package ast;
 
 import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Collection;
 
 import util.AsmWriter;
 
 public class Program extends Node {
   
-  private Map<String, GlobalVariable> variables;
-  private Map<String, Function> functions;
+  private Collection<GlobalVariable> variables;
+  private Collection<Function> functions;
 
-  public Program(Map<String, GlobalVariable> variables, Map<String, Function> functions) {
+  public Program(Collection<GlobalVariable> variables, Collection<Function> functions) {
     this.variables = variables;
     this.functions = functions;
   }
 
-  public Function function(String name) {
-    return this.functions.get(name);
-  }
-
   public int resolveFunctionNames() {
     int errors = 0;
-    for (Function f : this.functions.values()) {
-      errors += f.resolveFunctionNames(this.functions);
+    
+    HashMap<String, Function> functions = new HashMap<>();
+    for (Function f : this.functions) {
+      if (functions.put(f.name(), f) != null) {
+        System.err.println(" Function \'" + f.name() + "\' is defined more than once.");
+        errors++;
+      }
+    }
+
+    if (functions.get("main") == null) {
+      System.err.println("No main function defined.");
+      errors++;
+    }
+    
+    for (Function f : this.functions) {
+      errors += f.resolveFunctionNames(functions);
     }
     return errors;
   }
@@ -32,7 +41,7 @@ public class Program extends Node {
   @Override
   public int calculateAndCheckTypes() {
     int errors = 0;
-    for (Function f : this.functions.values()) {
+    for (Function f : this.functions) {
       errors += f.calculateAndCheckTypes();
     }
     return errors;
@@ -46,12 +55,12 @@ public class Program extends Node {
     asm.instr("ecall");
     asm.println("");
     
-    for (Function f : this.functions.values()) {
+    for (Function f : this.functions) {
       f.generateCode(asm);
     }
     
     asm.dataSection();
-    for (GlobalVariable v : this.variables.values()) {
+    for (GlobalVariable v : this.variables) {
       v.generateCode(asm);
     }
   }

@@ -32,12 +32,11 @@ public class Assignment extends Statement {
   }
 
   public void generateCode(AsmWriter asm) {
+    this.rhs.generateCode(asm);
+    this.lvalue.generateCode(asm);
+
     if (this.rhs.type().isInt()) {
-      this.rhs.generateCode(asm);
-      this.lvalue.generateCode(asm);
       asm.sw(this.rhs.result(), this.lvalue.address());
-      this.rhs.result().release();
-      this.lvalue.address().release();
     }
     else if (this.rhs.type().isArray()) {
       asm.mv(Registers.a0, this.lvalue.address());
@@ -48,5 +47,8 @@ public class Assignment extends Statement {
     else {
       throw new RuntimeException("Must not happen");
     }
+    
+    this.rhs.result().release();
+    this.lvalue.address().release();
   }
 }

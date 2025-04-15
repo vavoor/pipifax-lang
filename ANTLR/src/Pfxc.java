@@ -48,11 +48,6 @@ class Pfxc {
       if (program.calculateAndCheckTypes() > 0) {
         throw new CompileError();
       }
-      
-      if (program.function("main") == null) {
-        System.err.println("No main function defined.");
-        throw new CompileError();
-      }
 
       AsmWriter asm = new AsmWriter(baseName() + ".s");
       program.generateCode(asm);

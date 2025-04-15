@@ -27,13 +27,13 @@ public class LValueExpr extends Expr {
 
   @Override
   public void generateCode(AsmWriter asm) {
+    this.lvalue.generateCode(asm);
     if (this.type.isInt()) {
-      this.lvalue.generateCode(asm);
       this.register = this.lvalue.address();
       asm.lw(this.register, this.register);
     }
     else if (this.type.isArray()) {
-      throw new RuntimeException("Not yet implemented");
+      this.register = this.lvalue.address();
     }
     else {
       throw new RuntimeException("Must not happend");

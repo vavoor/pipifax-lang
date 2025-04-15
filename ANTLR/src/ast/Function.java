@@ -1,14 +1,17 @@
 package ast;
 
 import java.util.Map;
+import java.util.Collection;
 import util.AsmWriter;
 
 public class Function extends Node {
   private String name;
+  Collection<LocalVariable> locals;
   private Block block;
 
-  public Function(String name, Block block) {
+  public Function(String name, Collection<LocalVariable> locals, Block block) {
     this.name = name;
+    this.locals = locals;
     this.block = block;
   }
 

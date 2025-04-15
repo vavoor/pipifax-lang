@@ -15,7 +15,12 @@ functionDefinition
   ;
 
 block
-  : '{' statement* '}'
+  : '{' statementOrDeclaration* '}'
+  ;
+
+statementOrDeclaration
+  : statement
+  | localVariable
   ;
 
 statement
@@ -26,6 +31,10 @@ statement
 lvalue
   : Name                # NamedLValue
   | lvalue '[' expr ']' # IndexedLValue
+  ;
+
+localVariable
+  : 'var' Name type
   ;
   
 type

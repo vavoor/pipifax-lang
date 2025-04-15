@@ -24,19 +24,19 @@ public class AsmWriter {
   }
 
   public void mv(Registers.Register rd, Registers.Register rs) {
-    instr("mv " + rd + "," + rs);
+    instr("mv", rd.toString(), rs.toString());
   }
   
   public void la(Registers.Register r, String symbol) {
-    instr("la " + r + "," + symbol);
+    instr("la", r.toString(), symbol);
   }
 
   public void li(Registers.Register r, int value) {
-    instr("li " + r + "," + value);
+    instr("li", r.toString(), Integer.toString(value));
   }
 
   public void lw(Registers.Register r, int offset, Registers.Register ra) {
-    instr("lw " + r + "," + offset + "(" + ra + ")");
+    instr("lw", r.toString(), offset(offset,ra));
   }
 
   public void lw(Registers.Register r, Registers.Register ra) {
@@ -44,7 +44,7 @@ public class AsmWriter {
   }
   
   public void sw(Registers.Register r, int offset, Registers.Register ra) {
-    instr("sw " + r + "," + offset + "(" + ra + ")");
+    instr("sw", r.toString(), offset(offset,ra));
   }
 
   public void sw(Registers.Register r, Registers.Register ra) {
@@ -52,31 +52,35 @@ public class AsmWriter {
   }
 
   public void add(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
-    op3r("add", rd, rs, rt);
+    instr("add", rd.toString(), rs.toString(), rt.toString());
   }
 
    public void addi(Registers.Register rd, Registers.Register rs, int val) {
-    instr("addi " + rd + "," + rs + "," + Integer.toString(val));
+    instr("addi", rd.toString(), rs.toString(), Integer.toString(val));
   }
 
   public void mul(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
-    op3r("mul", rd, rs, rt);
+    instr("mul", rd.toString(), rs.toString(), rt.toString());
   }
 
   public void jal(String name) {
-    instr("jal " + name);
+    instr("jal", name);
   }
 
   public void ret() {
     instr("ret");
   }
 
-  public void op3r(String op, Registers.Register rd, Registers.Register rs, Registers.Register rt) {
-    instr(op + " " + rd + "," + rs + "," + rt);
-  }
-
-  public void instr(String instr) {
-    this.output.println("\t" + instr);
+  public void instr(String op, String... args) {
+    StringBuffer instr = new StringBuffer("\t").append(op);
+    String sep = " ";
+    for (String s : args) {
+      instr.append(sep);
+      instr.append(s);
+      sep = ",";
+    }
+    
+    this.output.println(instr);
   }
 
   public void label(String label) {
@@ -85,5 +89,9 @@ public class AsmWriter {
   
   public void comment(String cmt) {
     this.output.println("# " + cmt);
+  }
+  
+  private String offset(int offset, Registers.Register ra) {
+    return Integer.toString(offset) + "(" + ra.toString() + ")";
   }
 }

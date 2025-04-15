@@ -1,35 +1,36 @@
-import java.util.Map;
-import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 import ast.*;
+import util.Scope;
 
 
 public class AstGen extends PfxBaseVisitor<Node> {
 
   private int errors = 0;
 
-  private Map<String, GlobalVariable> variables = new LinkedHashMap<>();
-  private Map<String, Function> functions = new LinkedHashMap<>();
+  private Scope<Variable> scopes = new Scope<>();
+  private List<GlobalVariable> globals = new ArrayList<>();
+  private List<LocalVariable> locals;
+  private List<Function> functions = new ArrayList<>();
 
   @Override
   public Node visitProgram(PfxParser.ProgramContext ctx) {
+    scopes.enter(); // create the global scope
+    
     for (PfxParser.GlobalVariableContext gv : ctx.globalVariable()) {
       GlobalVariable v = (GlobalVariable) gv.accept(this);
-      if (this.variables.put(v.name(), v) != null) {
-        System.err.println("Global variable \'" + v.name() + "\' is declared more than once.");
-        this.errors++;
-      }
+      this.globals.add(v);
     }
 
     for (PfxParser.FunctionDefinitionContext fc : ctx.functionDefinition()) {
       Function f = (Function) fc.accept(this);
-      if (this.functions.put(f.name(), f) != null) {
-        System.err.println("Function \'" + f.name() + "\' is defined more than once.");
-        this.errors++;
-      }
+      this.functions.add(f);
     }
+
+    scopes.leave();
     
-    return new Program(variables, functions);
+    return new Program(globals, functions);
   }
 
   @Override
@@ -37,24 +38,49 @@ public class AstGen extends PfxBaseVisitor<Node> {
     String name = ctx.Name().getText();
     Type type = (Type) ctx.type().accept(this);
     GlobalVariable v = new GlobalVariable(name, type);
+    
+    if (this.scopes.insert(name, v)) {
+      System.err.println("Global variable \'" + name + "\' is declared more than once.");
+      this.errors++;
+    }
+    
     return v;
   }
 
   @Override
   public Node visitFunctionDefinition(PfxParser.FunctionDefinitionContext ctx) {
     String name = ctx.Name().getText();
+    this.locals = new ArrayList<LocalVariable>();
     Block block = (Block) ctx.block().accept(this);
-    return new Function(name, block);
+    return new Function(name, locals, block);
   }
 
   @Override
   public Node visitBlock(PfxParser.BlockContext ctx) {
     Block block = new Block();
-    for (PfxParser.StatementContext s : ctx.statement()) {
-      Statement stmt = (Statement) s.accept(this);
-      block.addStmt(stmt);
+    for (PfxParser.StatementOrDeclarationContext s : ctx.statementOrDeclaration()) {
+      Node n = s.accept(this);
+      if (n != null) {
+        Statement stmt = (Statement) n;
+        block.addStmt(stmt);
+      }
     }
     return block;
+  }
+
+  @Override
+  public Node visitLocalVariable(PfxParser.LocalVariableContext ctx) {
+    String name = ctx.Name().getText();
+    Type type = (Type) ctx.type().accept(this);
+    LocalVariable v = new LocalVariable(name, type);
+    
+    if (this.scopes.insert(v.name(), v)) {
+      System.err.println("Local variable \'" + name + "\' is declared more than once.");
+      this.errors++;
+    }
+    this.locals.add(v);
+    
+    return null;
   }
 
   @Override
@@ -104,7 +130,7 @@ public class AstGen extends PfxBaseVisitor<Node> {
   @Override
   public Node visitNamedLValue(PfxParser.NamedLValueContext ctx) {
     String name = ctx.Name().getText();
-    Variable v = this.variables.get(name);
+    Variable v = this.scopes.lookup(name);
     if (v == null) {
       System.err.println("Variable \'" + name + "\' is not declared.");
       errors++;
