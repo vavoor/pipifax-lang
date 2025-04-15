@@ -18,7 +18,7 @@ public class Function extends Node {
 
   @Override
   public int resolveFunctionNames(Map<String, Function> functions) {
-    return 0; // TODO
+    return this.block.resolveFunctionNames(functions);
   }
   
   @Override
