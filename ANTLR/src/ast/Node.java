@@ -16,7 +16,10 @@ public abstract class Node {
   public int calculateAndCheckTypes() {
     return 0;
   }
+
+  public void allocateMemory() {
+  }
   
-  public  void generateCode(AsmWriter asm) {
+  public void generateCode(AsmWriter asm) {
   }
 }

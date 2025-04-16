@@ -27,6 +27,9 @@ public class Registers {
     };
   }
 
+  public static final Register zero = new Register("zero");
+  public static final Register fp = new Register("fp");
+  public static final Register ra = new Register("ra");
   public static final Register sp = new Register("sp");
   public static final Register a0 = new Register("a0");
   public static final Register a1 = new Register("a1");

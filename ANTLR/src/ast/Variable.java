@@ -1,8 +1,13 @@
 package ast;
 
+import util.Registers;
+import util.AsmWriter;
+
 public abstract class Variable extends Node {
-  private String name;
-  private Type type;
+  protected String name;
+  protected Type type;
+
+  protected int offset;
 
   public Variable(String name, Type type) {
     this.name = name;
@@ -16,4 +21,14 @@ public abstract class Variable extends Node {
   public Type type() {
     return this.type;
   }
+
+  public void setOffset(int offset) {
+    this.offset = offset;
+  }
+
+  public int offset() {
+    return this.offset;
+  }
+
+  public abstract Registers.Register la(AsmWriter asm);
 }

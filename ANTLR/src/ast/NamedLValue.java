@@ -19,7 +19,10 @@ public class NamedLValue extends LValue {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    this.address = Registers.acquire();
-    asm.la(this.address, this.name);
+    this.address = this.variable.la(asm);
+  }
+
+  public Variable variable() {
+    return this.variable;
   }
 }

@@ -23,6 +23,10 @@ public class AsmWriter {
     this.output.println(s);
   }
 
+  public void nl() {
+    this.output.println();
+  }
+
   public void mv(Registers.Register rd, Registers.Register rs) {
     instr("mv", rd.toString(), rs.toString());
   }
