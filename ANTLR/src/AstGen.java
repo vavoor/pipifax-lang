@@ -50,9 +50,24 @@ public class AstGen extends PfxBaseVisitor<Node> {
   @Override
   public Node visitFunctionDefinition(PfxParser.FunctionDefinitionContext ctx) {
     String name = ctx.Name().getText();
+
+    scopes.enter();
+    List<Parameter> parameters = new ArrayList<>();
+    for (PfxParser.ParamContext p : ctx.param()) {
+      Parameter param = (Parameter) p.accept(this);
+      parameters.add(param);
+      if (scopes.insert(param.name(), param)) {
+        System.err.println("Parameter \'" + param.name() + "\' is declared more than once.");
+        this.errors++;
+      }
+    }
+
+    scopes.enter();
     this.locals = new ArrayList<LocalVariable>();
     Block block = (Block) ctx.block().accept(this);
-    return new Function(name, locals, block);
+    scopes.leave();
+    scopes.leave();
+    return new Function(name, parameters, locals, block);
   }
 
   @Override
@@ -66,6 +81,13 @@ public class AstGen extends PfxBaseVisitor<Node> {
       }
     }
     return block;
+  }
+
+  @Override
+  public Node visitParam(PfxParser.ParamContext ctx) {
+    String name = ctx.Name().getText();
+    Type type = (Type) ctx.type().accept(this);
+    return new Parameter(name, type);
   }
 
   @Override

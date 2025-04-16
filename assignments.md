@@ -272,3 +272,9 @@ func main() {
   var a int
 }
 ```
+
+
+## 11. Function parameters and return values
+
+Extend the compiler to allow functions having parameters and returning
+values.

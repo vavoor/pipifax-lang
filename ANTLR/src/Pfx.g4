@@ -11,7 +11,11 @@ globalVariable
   ;
 
 functionDefinition
-  : 'func' Name '(' ')' block
+  : 'func' Name '(' ( param ( ',' param )* )? ')' block
+  ;
+
+param
+  : Name type
   ;
 
 block

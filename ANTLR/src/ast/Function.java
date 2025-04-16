@@ -7,13 +7,15 @@ import util.Registers;
 
 public class Function extends Node {
   private String name;
-  Collection<LocalVariable> locals;
+  private Collection<LocalVariable> locals;
+  private Collection<Parameter> parameters;
   private Block block;
 
   private int localsSize;
 
-  public Function(String name, Collection<LocalVariable> locals, Block block) {
+  public Function(String name, Collection<Parameter> parameters, Collection<LocalVariable> locals, Block block) {
     this.name = name;
+    this.parameters = parameters;
     this.locals = locals;
     this.block = block;
   }
