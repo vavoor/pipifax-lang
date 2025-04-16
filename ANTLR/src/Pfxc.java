@@ -25,6 +25,10 @@ class Pfxc {
       PfxLexer lexer = new PfxLexer(CharStreams.fromFileName(this.inputFileName));
       PfxParser parser = new PfxParser(new CommonTokenStream(lexer));
       ParserRuleContext parseTree = parser.program();
+      if (parser.getNumberOfSyntaxErrors() > 0) {
+        throw new RuntimeException();
+      }
+      
       AsmWriter asm = new AsmWriter(baseName() + ".s");
 
       CodeGen gen = new CodeGen(asm);
