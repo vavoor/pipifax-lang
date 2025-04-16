@@ -25,7 +25,10 @@ class Pfxc {
       PfxLexer lexer = new PfxLexer(CharStreams.fromFileName(this.inputFileName));
       PfxParser parser = new PfxParser(new CommonTokenStream(lexer));
       ParserRuleContext parseTree = parser.program();
-
+      if (parser.getNumberOfSyntaxErrors() > 0) {
+        throw new RuntimeException();
+      }
+      
       int errors;
       NameChecker nameChecker = new NameChecker();
       parseTree.accept(nameChecker);
