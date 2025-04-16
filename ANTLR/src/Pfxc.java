@@ -33,6 +33,10 @@ class Pfxc {
       AstGen astgen = new AstGen();
       Program program = (Program) parseTree.accept(astgen);
 
+      if (parser.getNumberOfSyntaxErrors() > 0) {
+        throw new CompileError();
+      }
+
       if (astgen.errors() > 0) {
         throw new CompileError();
       }
