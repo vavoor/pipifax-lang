@@ -30,12 +30,12 @@ class Pfxc {
       PfxParser parser = new PfxParser(new CommonTokenStream(lexer));
       ParserRuleContext parseTree = parser.program();
 
-      AstGen astgen = new AstGen();
-      Program program = (Program) parseTree.accept(astgen);
-
       if (parser.getNumberOfSyntaxErrors() > 0) {
         throw new CompileError();
       }
+
+      AstGen astgen = new AstGen();
+      Program program = (Program) parseTree.accept(astgen);
 
       if (astgen.errors() > 0) {
         throw new CompileError();
