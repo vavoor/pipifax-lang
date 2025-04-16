@@ -12,7 +12,7 @@ public class LocalVariable extends Variable {
   @Override
   public Registers.Register la(AsmWriter asm) {
     Registers.Register address = Registers.acquire();
-    asm.addi(address, Registers.fp, offset() - this.offset);
+    asm.addi(address, Registers.fp, -this.offset);
     return address;
   }
 }
