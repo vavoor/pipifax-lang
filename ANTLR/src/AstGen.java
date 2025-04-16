@@ -50,8 +50,10 @@ public class AstGen extends PfxBaseVisitor<Node> {
   @Override
   public Node visitFunctionDefinition(PfxParser.FunctionDefinitionContext ctx) {
     String name = ctx.Name().getText();
+    this.scopes.enter();
     this.locals = new ArrayList<LocalVariable>();
     Block block = (Block) ctx.block().accept(this);
+    this.scopes.leave();
     return new Function(name, locals, block);
   }
 
