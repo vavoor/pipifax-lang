@@ -274,7 +274,7 @@ func main() {
 ```
 
 
-## 11. Function parameters and return values
+## 11. Function parameters
 
 Extend the compiler to allow functions having parameters and returning
 values.
@@ -290,5 +290,23 @@ func f(a int, b [5] int) {
   x = a
   x = b[2]
   b[x] = a
+}
+```
+
+## 12. Functions with return values
+
+```
+var i int
+
+func main() {
+  i = f(1, g(2), g(3))
+}
+
+func f(a int, b int, c int) {
+  f = a + b + c
+}
+
+func g(x int) {
+  g = x
 }
 ```

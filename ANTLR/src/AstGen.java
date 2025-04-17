@@ -62,12 +62,20 @@ public class AstGen extends PfxBaseVisitor<Node> {
       }
     }
 
+    Type type = (ctx.type() != null) ? (Type) ctx.type().accept(this) : VoidType.instance();
+    Parameter ret = new Parameter(name, type);
+    parameters.add(ret);
+    if (scopes.insert(ret.name(), ret)) {
+      System.err.println("Function name \'" + ret.name() + "\' mujst not be used as parameter name");
+      this.errors++;
+    }
+
     scopes.enter();
     this.locals = new ArrayList<LocalVariable>();
     Block block = (Block) ctx.block().accept(this);
     scopes.leave();
     scopes.leave();
-    return new Function(name, parameters, locals, block);
+    return new Function(name, type, parameters, locals, block);
   }
 
   @Override
@@ -146,6 +154,12 @@ public class AstGen extends PfxBaseVisitor<Node> {
   public Node visitLValueExpr(PfxParser.LValueExprContext ctx) {
     LValue lvalue = (LValue) ctx.lvalue().accept(this);
     return new LValueExpr(lvalue);
+  }
+
+  @Override
+  public Node visitCallExpr(PfxParser.CallExprContext ctx) {
+    CallExpr call = (CallExpr) ctx.call().accept(this);
+    return call;
   }
 
   @Override

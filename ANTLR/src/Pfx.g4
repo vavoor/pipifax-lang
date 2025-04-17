@@ -11,7 +11,7 @@ globalVariable
   ;
 
 functionDefinition
-  : 'func' Name '(' ( param ( ',' param )* )? ')' block
+  : 'func' Name '(' ( param ( ',' param )* )? ')' type? block
   ;
 
 param
@@ -53,6 +53,7 @@ ptype
 expr
   : expr '+' expr   # AddExpr
   | IntNumber       # IntLiteralExpr
+  | call            # CallExpr
   | lvalue          # LValueExpr
   ;
 

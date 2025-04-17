@@ -41,7 +41,7 @@ public class CallExpr extends Expr {
       errors += expr.calculateAndCheckTypes();
     }
 
-    if (args.size() == this.function.parameters().size()) {
+    if (args.size() == this.function.parameters().size() - 1) {
       Iterator<Parameter> params = this.function.parameters().iterator();
       Iterator<Expr> args = this.args.iterator();
       for (int i = 0; i < this.args.size(); i++) {
@@ -57,7 +57,7 @@ public class CallExpr extends Expr {
       System.err.println("Number of arguments does not match in call to function " + this.name);
       errors++;
     }
-    
+    this.type = this.function.type();
     return errors;
   }
 
@@ -71,8 +71,10 @@ public class CallExpr extends Expr {
       asm.sw(expr.result(), param.offset(), Registers.sp);
       expr.result().release();
     }
+    Parameter ret = params.next();
     asm.jal(function.mangledName());
     this.register = Registers.acquire();
+    asm.lw(this.register, ret.offset(), Registers.sp);
     asm.addi(Registers.sp, Registers.sp, this.function.parametersSize());
   }
 }

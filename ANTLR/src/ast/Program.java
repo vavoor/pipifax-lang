@@ -57,7 +57,7 @@ public class Program extends Node {
   @Override
   public void generateCode(AsmWriter asm) {
     asm.textSection();
-    asm.jal("main");
+    asm.jal("f_main");
     asm.instr("li a7,10");
     asm.instr("ecall");
     
