@@ -15,7 +15,7 @@ functionDefinition
   ;
 
 param
-  : Name type
+  : Name ptype
   ;
 
 block
@@ -29,7 +29,7 @@ statementOrDeclaration
 
 statement
   : lvalue '=' expr   # AssignmentStmt
-  | Name '(' ')'      # CallStmt
+  | call              # CallStmt
   ;
 
 lvalue
@@ -46,10 +46,18 @@ type
   | '[' IntNumber ']' type  # ArrayType
   ;
 
+ptype
+  : type
+  ;
+
 expr
   : expr '+' expr   # AddExpr
   | IntNumber       # IntLiteralExpr
   | lvalue          # LValueExpr
+  ;
+
+call
+  : Name '(' ( expr ( ',' expr)* )? ')'
   ;
 
 /* Lexer rules */

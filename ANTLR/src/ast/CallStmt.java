@@ -4,30 +4,25 @@ import java.util.Map;
 import util.AsmWriter;
 
 public class CallStmt extends Statement {
-  private String name;
-  private Function function;
+  private CallExpr call;
   
-  public CallStmt(String function) {
-    this.name = function;
+  public CallStmt(CallExpr call) {
+    this.call = call;
   }
 
   @Override
   public int resolveFunctionNames(Map<String, Function> functions) {
-    this.function = functions.get(this.name);
-    if (this.function == null) {
-      System.err.println("Function \'" + this.name + "\' is called but not defined.");
-      return 1;
-    }
-    return 0;
+    return call.resolveFunctionNames(functions);
   }
 
   @Override
   public int calculateAndCheckTypes() {
-    return 0;
+    return call.calculateAndCheckTypes();
   }
 
   @Override
   public void generateCode(AsmWriter asm) {
-    asm.jal(this.name);
+    call.generateCode(asm);
+    call.result().release();
   }
 }

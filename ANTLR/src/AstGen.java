@@ -86,7 +86,7 @@ public class AstGen extends PfxBaseVisitor<Node> {
   @Override
   public Node visitParam(PfxParser.ParamContext ctx) {
     String name = ctx.Name().getText();
-    Type type = (Type) ctx.type().accept(this);
+    Type type = (Type) ctx.ptype().accept(this);
     return new Parameter(name, type);
   }
 
@@ -114,8 +114,19 @@ public class AstGen extends PfxBaseVisitor<Node> {
 
   @Override
   public Node visitCallStmt(PfxParser.CallStmtContext ctx) {
+    CallExpr call = (CallExpr) ctx.call().accept(this);
+    return new CallStmt(call);
+  }
+
+  @Override
+  public Node visitCall(PfxParser.CallContext ctx) {
     String name = ctx.Name().getText();
-    return new CallStmt(name);
+    List<Expr> args = new ArrayList<>();
+    for (PfxParser.ExprContext e : ctx.expr()) {
+      Expr expr = (Expr) e.accept(this);
+      args.add(expr);
+    }
+    return new CallExpr(name, args);
   }
 
   @Override

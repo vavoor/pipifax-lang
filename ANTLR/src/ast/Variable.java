@@ -18,6 +18,10 @@ public abstract class Variable extends Node {
     return this.name;
   }
 
+  public String mangledName() {
+    return "v_" + this.name;
+  }
+
   public Type type() {
     return this.type;
   }

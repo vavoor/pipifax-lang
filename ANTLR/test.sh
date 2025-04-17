@@ -11,6 +11,10 @@ run() {
     $PFXC $1
 }
 
-for f in *.pfx; do
-  run $f
-done
+if [[ -n "$1" ]]; then
+  run $1
+else
+  for f in *.pfx; do
+    run $f
+  done
+fi

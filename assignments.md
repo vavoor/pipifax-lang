@@ -278,3 +278,17 @@ func main() {
 
 Extend the compiler to allow functions having parameters and returning
 values.
+
+```
+func main() {
+  var a [5] int
+  f(5,a)
+}
+
+func f(a int, b [5] int) {
+  var x int
+  x = a
+  x = b[2]
+  b[x] = a
+}
+```

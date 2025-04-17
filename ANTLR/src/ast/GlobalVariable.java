@@ -12,12 +12,12 @@ public class GlobalVariable extends Variable {
   @Override
   public Registers.Register la(AsmWriter asm) {
     Registers.Register address = Registers.acquire();
-    asm.la(address, this.name);
+    asm.la(address, this.mangledName());
     return address;
   }
   
   @Override
   public void generateCode(AsmWriter asm) {
-    asm.println(this.name() + ":\t.word 0");
+    asm.println(this.mangledName() + ":\t.word 0");
   }
 }
