@@ -19,6 +19,11 @@ public class AsmWriter {
     this.output.println("\n.text");
   }
 
+  public void utilitySection() {
+    nl();
+    this.output.println(this.utilities);
+  }
+
   public void println(String s) {
     this.output.println(s);
   }
@@ -87,6 +92,17 @@ public class AsmWriter {
     this.output.println(instr);
   }
 
+  public void memcpy(Registers.Register rd, Registers.Register rs, int count) {
+    if (rd != Registers.a0) {
+      mv(Registers.a0, rd);
+    }
+    if (rs != Registers.a1) {
+      mv(Registers.a1, rs);
+    }
+    li(Registers.a2, count/4);
+    jal("__memcpy"); // TODO: provide an implementation of __memcpy
+  }
+
   public void label(String label) {
     this.output.println(label + ":");
   }
@@ -98,4 +114,16 @@ public class AsmWriter {
   private String offset(int offset, Registers.Register ra) {
     return Integer.toString(offset) + "(" + ra.toString() + ")";
   }
+
+  private static final String utilities =
+  "__memcpy:\n" +
+  "\tbnez a2,__memcpy_1\n" +
+  "\tret\n" +
+  "__memcpy_1:\n" +
+  "\taddi a2,a2,-4\n" +
+  "\tlw a3,0(a1)\n" +
+  "\taddi a1,a1,4\n" +
+  "\tsw a3,0(a0)\n" +
+  "\taddi a0,a0,4\n" +
+  "\tj __memcpy\n";
 }

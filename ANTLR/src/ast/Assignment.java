@@ -39,10 +39,7 @@ public class Assignment extends Statement {
       asm.sw(this.rhs.result(), this.lvalue.address());
     }
     else if (this.rhs.type().isArray()) {
-      asm.mv(Registers.a0, this.lvalue.address());
-      asm.mv(Registers.a1, this.rhs.result());
-      asm.li(Registers.a2, this.rhs.type().size());
-      asm.jal("__memcpy"); // TODO: provide an implementation of __memcpy
+      asm.memcpy(this.lvalue.address(), this.rhs.result(), this.rhs.type().size());
     }
     else {
       throw new RuntimeException("Must not happen");

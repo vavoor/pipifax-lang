@@ -61,6 +61,8 @@ public class Program extends Node {
     asm.instr("li a7,10");
     asm.instr("ecall");
     
+    asm.utilitySection();
+    
     for (Function f : this.functions) {
       f.generateCode(asm);
     }

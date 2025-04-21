@@ -68,13 +68,28 @@ public class CallExpr extends Expr {
     for (Expr expr : this.args) {
       Parameter param = params.next();
       expr.generateCode(asm);
-      asm.sw(expr.result(), param.offset(), Registers.sp);
+      if (expr.type().isInt()) {
+        asm.sw(expr.result(), param.offset(), Registers.sp);
+      }
+      else if (expr.type().isArray()) {
+        asm.addi(Registers.a0, Registers.sp, param.offset());
+        asm.memcpy(Registers.a0, expr.result(), expr.type().size());
+      }
+      else {
+        throw new RuntimeException("Must not happend");
+      }
       expr.result().release();
     }
     Parameter ret = params.next();
     asm.jal(function.mangledName());
     this.register = Registers.acquire();
-    asm.lw(this.register, ret.offset(), Registers.sp);
+    if (this.type.isInt()) {
+      asm.lw(this.register, ret.offset(), Registers.sp);
+    }
+    else if (this.type.isArray()) {
+      asm.addi(this.register, Registers.sp, ret.offset()); // TODO DANGEROUS!!!
+    }
+      
     asm.addi(Registers.sp, Registers.sp, this.function.parametersSize());
   }
 }
