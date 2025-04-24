@@ -9,6 +9,10 @@ void ListDelete(List* list);
 void ListAppend(List* list, void* value);
 int ListSize(List* list);
 
+void ListPush(List* list, void* value);
+void* ListPop(List* list);
+void* ListTop(List* list);
+
 void ListIterator(List* list, ListItor* itor);
 int ListHasMore(ListItor* itor);
 void* ListNext(ListItor* itor);

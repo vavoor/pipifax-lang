@@ -57,14 +57,6 @@ static int find_slot(Map* map, struct _Pair* pair, int* index)
   return -1;
 }
 
-static void insert(Map* map, struct _Pair* pair)
-{
-  int i;
-  int found;
-
-  found = find_slot(map, pair, &i);
-}
-
 static void grow(Map* map)
 {
   if (map->capacity >= 1024) {
@@ -117,6 +109,7 @@ void MapDelete(Map* map)
 
   ListDelete(map->pairs);
   free(map->hash_table);
+  free(map);
 }
 
 void* MapPut(Map* map, const char* key, void* value)
@@ -155,14 +148,13 @@ void* MapGet(Map* map, const char* key)
   assert(map != NULL);
   assert(key != NULL);
 
-  ListItor it;
-  ListIterator(map->pairs, &it);
-  while (ListHasMore(&it)) {
-    Pair* pair = ListNext(&it);
-    assert(pair != NULL);
-    if (strcmp(key, pair->key) == 0) {
-      return pair->value;
-    }
+  int i;
+  struct _Pair p;
+  p.key = key;
+  p.hash = hash(key);
+  if (find_slot(map, &p, &i)) {
+    struct _Pair* pair = map->hash_table[i];
+    return pair->value;
   }
 
   return NULL;
