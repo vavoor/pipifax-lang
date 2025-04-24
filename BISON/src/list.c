@@ -59,6 +59,12 @@ void ListAppend(List* list, void* value)
   list->size++;
 }
 
+int ListSize(List* list)
+{
+  assert(list != NULL);
+  return list->size;
+}
+
 void ListIterator(List* list, ListItor* itor)
 {
   assert(list != NULL);
@@ -69,7 +75,7 @@ void ListIterator(List* list, ListItor* itor)
   it->element = list->first;
 }
 
-int ListItHasMore(ListItor* itor)
+int ListHasMore(ListItor* itor)
 {
   assert(itor != NULL);
   struct _ListItor* it = (struct _ListItor*) itor;
@@ -77,7 +83,7 @@ int ListItHasMore(ListItor* itor)
   return it->element != NULL;
 }
 
-void* ListItNext(ListItor* itor)
+void* ListNext(ListItor* itor)
 {
   assert(itor != NULL);
   struct _ListItor* it = (struct _ListItor*) itor;
