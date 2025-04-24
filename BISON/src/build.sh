@@ -10,4 +10,4 @@ echo "flex pfx.l"
 flex pfx.l
 
 echo "gcc -o ../pfx *.c"
-gcc -o ../pfx *.c
+gcc -o ../pfxc *.c

@@ -6,6 +6,13 @@ ANTLR/gen
 ANTLR/dst
 ANTLR/tst/*.s
 
+*.o
+pfxc
+lex.yy.c
+pfx.tab.c
+pfx.tab.h
+pfx.output
+
 # Log file
 *.log
 
