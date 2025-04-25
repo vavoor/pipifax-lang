@@ -37,7 +37,7 @@ static void* insert(const char* key, void* value)
 {
   Map* m = ListTop(scopes);
   if (m != NULL) {
-    void* previous = MapPut(m, key, value);
+    void* previous = MapPut(m, key, value, NULL);
     return previous;
   }
   return NULL; /* TODO : is this correct? */
@@ -47,7 +47,17 @@ int resolve(struct Program* program)
 {
   scopes = ListMake();
   enter_scope();
+
+  ListItor it;
+  ListIterator(program->globals, &it);
+  while (ListHasMore(&it)) {
+    struct Variable* v = ListNext(&it);
+  }
+
   exit_scope();
   ListDelete(scopes);
   return 0;
+
+exit:
+  return 1;
 }

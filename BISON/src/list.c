@@ -15,6 +15,7 @@ struct _List {
 };
 
 struct _ListItor {
+  List* list;
   struct _Element* element;
 };
 
@@ -123,6 +124,7 @@ void ListIterator(List* list, ListItor* itor)
   assert(sizeof(ListItor) >= sizeof(struct _ListItor));
 
   struct _ListItor* it = (struct _ListItor*) itor;
+  it->list = list;
   it->element = list->first;
 }
 
@@ -142,7 +144,7 @@ void* ListNext(ListItor* itor)
 
   if (it->element != NULL) {
     value = it->element->value;
-    it->element->next;
+    it->element = it->element->next;
   }
 
   return value;

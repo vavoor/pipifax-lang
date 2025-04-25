@@ -112,7 +112,13 @@ void MapDelete(Map* map)
   free(map);
 }
 
-void* MapPut(Map* map, const char* key, void* value)
+int MapSize(Map* map)
+{
+  assert(map != NULL);
+  return ListSize(map->pairs);
+}
+
+void* MapPut(Map* map, const char* key, void* value, Pair* previous)
 {
   assert(map != NULL);
   assert(key != NULL);
@@ -129,16 +135,22 @@ void* MapPut(Map* map, const char* key, void* value)
   int i;
   if (find_slot(map, &new_pair, &i)) {
     struct _Pair* pair = map->hash_table[i];
-    void* previous = pair->value;
-    pair->value = value;
-    return previous;
+    void* val = pair->value;
+    if (previous != NULL) {
+      *previous = *pair;
+    }
+    *pair = new_pair;
+    return val;
   }
   else {
     struct _Pair* pair = malloc(sizeof(struct _Pair));
     assert(pair != NULL);
     *pair = new_pair;
-    ListAppend(map->pairs, pair);
     map->hash_table[i] = pair;
+    ListAppend(map->pairs, pair);
+    if (previous != NULL) {
+      previous->key = previous->value = NULL;
+    }
     return NULL;
   }
 }

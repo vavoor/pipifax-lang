@@ -2,7 +2,7 @@
 #define HEADER_6289681d_a70e_4cb3_ad91_d8dbea403c9c
 
 typedef struct _List List;
-typedef struct { void* dummy[1]; } ListItor;
+typedef struct { void* dummy[2]; } ListItor;
 
 List* ListMake(void);
 void ListDelete(List* list);

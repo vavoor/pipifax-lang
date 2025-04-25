@@ -8,11 +8,13 @@ typedef struct _Pair {
 } Pair;
 
 typedef struct _Map Map;
-typedef struct { void* dummy[1]; } MapItor;
+typedef struct { void* dummy[2]; } MapItor;
 
 Map* MapMake(void);
 void MapDelete(Map* map);
-void* MapPut(Map* map, const char* key, void* value);
+int MapSize(Map* map);
+
+void* MapPut(Map* map, const char* key, void* value, Pair* previous);
 void* MapGet(Map* map, const char* key);
 
 void MapIterator(Map* map, MapItor* itor);
