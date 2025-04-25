@@ -153,3 +153,68 @@ case V_PARAMETER: {
 break;
 
 }
+
+
+
+============================================================================
+
+case E_OR:
+case E_AND:{
+}
+break;
+
+case E_ADD:
+case E_SUB:
+case E_MUL:
+case E_DIV: {
+}
+break;
+
+case E_LE:
+case E_LT:
+case E_GE:
+case E_GT:
+case E_EQ:
+case E_NE: {
+}
+break;
+
+case E_CMP: {
+}
+break;
+
+case E_NOT: {
+}
+break;
+
+case E_NEG: {
+}
+break;
+
+case E_INT_CAST: {
+}
+break;
+
+case E_DOUBLE_CAST: {
+}
+break;
+
+case E_CALL: {
+}
+break;
+
+case E_LVALUE: {
+}
+break;
+
+case E_INT_LITERAL: {
+}
+break;
+
+case E_DOUBLE_LITERAL: {
+}
+break;
+
+case E_STRING_LITERAL: {
+}
+break;

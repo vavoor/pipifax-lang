@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "resolver.h"
+#include "types.h"
 
 extern int yyparse(void);
 extern FILE* yyin;
@@ -23,6 +24,10 @@ int main(int argc, const char* argv[]) {
   fclose(yyin);
 
   if (resolve(program)) {
+    goto exit;
+  }
+
+  if (check_types(program)) {
     goto exit;
   }
 

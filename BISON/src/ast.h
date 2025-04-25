@@ -9,7 +9,7 @@ struct Node {
 };
 
 /* ******************* Types ************************** */
-enum { TY_VOID = 100, TY_INT, TY_DOUBLE, TY_STRING, TY_ARRAY, TY_REF };
+enum { TY_ERROR = 100, TY_VOID, TY_INT, TY_DOUBLE, TY_STRING, TY_ARRAY, TY_REF };
 
 struct Type {
   int clazz;
@@ -31,6 +31,7 @@ struct RefType {
 enum { LV_NAMED = 200, LV_INDEXED };
 struct LValue {
   int clazz;
+  struct Type* type;
 };
 
 struct NamedLValue {
@@ -159,6 +160,7 @@ extern struct Type int_type;
 extern struct Type double_type;
 extern struct Type string_type;
 extern struct Type void_type;
+extern struct Type error_type;
 
 extern struct Program* program;
 struct Program* AstProgram(void);

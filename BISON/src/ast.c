@@ -7,6 +7,7 @@ struct Type int_type = { TY_INT, 4};
 struct Type double_type = { TY_DOUBLE, 8 };
 struct Type string_type = { TY_STRING, 4 };
 struct Type void_type = { TY_VOID, 0};
+struct Type error_type = { TY_ERROR, 0};
 
 struct Program* program;
 struct Function* function;

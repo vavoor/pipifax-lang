@@ -160,6 +160,10 @@ void* MapGet(Map* map, const char* key)
   assert(map != NULL);
   assert(key != NULL);
 
+  if (MapSize(map) == 0) {
+    return NULL;
+  }
+
   int i;
   struct _Pair p;
   p.key = key;

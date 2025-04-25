@@ -9,5 +9,5 @@ bison -dv pfx.y
 echo "flex pfx.l"
 flex pfx.l
 
-echo "gcc -o ../pfx *.c"
-gcc -o ../pfxc *.c
+echo "gcc -g -o ../pfx *.c"
+gcc -g -o ../pfxc *.c

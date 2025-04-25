@@ -130,7 +130,7 @@ static int resolve_expr(struct Expr* expr)
   return errors;
 }
 
-static int resolve_stmts(List* stmts)
+static int resolve_stmts(List* stmts, struct Function* function)
 {
   int errors = 0;
   ListItor it;
@@ -141,15 +141,15 @@ static int resolve_stmts(List* stmts)
       case S_IF: {
         struct IfStmt* s = (struct IfStmt*) n;
         errors += resolve_expr(s->cond);
-        errors += resolve_stmts(s->if_true);
-        errors += resolve_stmts(s->if_false);
+        errors += resolve_stmts(s->if_true, function);
+        errors += resolve_stmts(s->if_false, function);
       }
       break;
 
       case  S_WHILE: {
         struct WhileStmt* s = (struct WhileStmt*) n;
         errors += resolve_expr(s->cond);
-        errors += resolve_stmts(s->stmts);
+        errors += resolve_stmts(s->stmts, function);
       }
       break;
 
@@ -168,6 +168,7 @@ static int resolve_stmts(List* stmts)
 
       case V_LOCAL: {
         struct Variable* v= (struct Variable*) n;
+        ListAppend(function->locals, v);
         if (insert(v)) {
           fprintf(stderr, "Local variable %s declared more than once\n", v->name);
           errors++;
@@ -198,7 +199,7 @@ static int resolve_function(struct Function* function)
   }
 
   enter_scope();
-  errors += resolve_stmts(function->stmts);
+  errors += resolve_stmts(function->stmts, function);
   exit_scope();
 
   exit_scope();
@@ -235,6 +236,11 @@ int resolve(struct Program* program)
   while (ListHasMore(&it)) {
     struct Function* f = ListNext(&it);
     errors += resolve_function(f);
+  }
+
+  if (MapGet(functions, "main") == NULL) {
+    fprintf(stderr, "Main function is missing\n");
+    errors++;
   }
 
   exit_scope();
