@@ -4,6 +4,10 @@
 #include "list.h"
 #include "map.h"
 
+struct Node {
+  int clazz;
+};
+
 /* ******************* Types ************************** */
 enum { TY_VOID = 100, TY_INT, TY_DOUBLE, TY_STRING, TY_ARRAY, TY_REF };
 
@@ -33,7 +37,6 @@ struct NamedLValue {
   struct LValue super;
   const char* name;
 
-  struct Type* type;
   struct Variable* variable;
 };
 
@@ -44,8 +47,8 @@ struct IndexedLValue {
 };
 
 enum { E_OR = 300, E_AND, E_ADD, E_SUB, E_MUL, E_DIV,
-  E_NOT, E_NEG, E_INT_CAST, E_DOUBLE_CAST,
   E_LE, E_LT, E_GE, E_GT, E_EQ, E_NE, E_CMP,
+  E_NOT, E_NEG, E_INT_CAST, E_DOUBLE_CAST,
   E_CALL, E_LVALUE,
   E_INT_LITERAL, E_DOUBLE_LITERAL, E_STRING_LITERAL };
 
@@ -62,7 +65,7 @@ struct BinaryExpr {
 
 struct UnaryExpr {
   struct Expr super;
-  struct Expr* e;
+  struct Expr* expr;
 };
 
 struct LValueExpr {
@@ -74,6 +77,7 @@ struct CallExpr {
   struct Expr super;
   const char* name;
   List* args;
+  struct Function* function;
 };
 
 struct LiteralExpr {
@@ -145,7 +149,7 @@ struct Program {
 
 struct Function {
   const char* name;
-  struct Type* type;
+  struct Variable* ret;
   List* params;
   List* locals;
   List* stmts;

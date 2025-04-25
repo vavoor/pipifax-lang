@@ -36,7 +36,7 @@ struct Function* AstFunction(const char* name, List* params, struct Type* type, 
   assert(f != NULL);
 
   f->name = name;
-  f->type = type;
+  f->ret = AstParameter(name, type);
   f->params = params;
   f->locals = ListMake();
   f->stmts = stmts;
@@ -124,7 +124,7 @@ struct Expr* AstUnaryExpr(int clazz, struct Expr* expr)
   assert(e != NULL);
 
   e->super.clazz = clazz;
-  e->e = expr;
+  e->expr = expr;
 
   return (struct Expr*) e;
 }

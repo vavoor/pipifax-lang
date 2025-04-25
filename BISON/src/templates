@@ -1,0 +1,155 @@
+
+switch () {
+case TY_VOID: {
+}
+break;
+
+case TY_INT: {
+}
+break;
+
+case TY_DOUBLE: {
+}
+break;
+
+case TY_STRING: {
+}
+break;
+
+case TY_ARRAY: {
+}
+break;
+
+case TY_REF: {
+}
+break;
+
+
+case LV_NAMED: {
+}
+break;
+
+case LV_INDEXED: {
+}
+break;
+
+
+case E_OR: {
+}
+break;
+
+case E_AND: {
+}
+break;
+
+case E_ADD: {
+}
+break;
+
+case E_SUB: {
+}
+break;
+
+case E_MUL: {
+}
+break;
+
+case E_DIV: {
+}
+break;
+
+case E_LE: {
+}
+break;
+
+case E_LT: {
+}
+break;
+
+case E_GE: {
+}
+break;
+
+case E_GT: {
+}
+break;
+
+case E_EQ: {
+}
+break;
+
+case E_NE: {
+}
+break;
+
+case E_CMP: {
+}
+break;
+
+case E_NOT: {
+}
+break;
+
+case E_NEG: {
+}
+break;
+
+case E_INT_CAST: {
+}
+break;
+
+case E_DOUBLE_CAST: {
+}
+break;
+
+case E_CALL: {
+}
+break;
+
+case E_LVALUE: {
+}
+break;
+
+case E_INT_LITERAL: {
+}
+break;
+
+case E_DOUBLE_LITERAL: {
+}
+break;
+
+case E_STRING_LITERAL: {
+}
+break;
+
+
+case S_IF: {
+}
+break;
+
+case S_WHILE: {
+}
+break;
+
+case S_CALL: {
+}
+break;
+
+case S_ASSIGN: {
+}
+break;
+
+
+case V_GLOBAL: {
+}
+break;
+
+case V_LOCAL: {
+}
+break;
+
+case V_PARAMETER: {
+}
+break;
+
+}
