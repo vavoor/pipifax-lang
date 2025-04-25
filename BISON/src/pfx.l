@@ -1,5 +1,8 @@
 %{
+#include "list.h"
 #include "pfx.tab.h"
+#include <stdlib.h>
+#include <string.h>
 %}
 
 D0    [0-9]
@@ -30,13 +33,14 @@ WS    [ \t\n\r\f]
 "&&"                  return T_AND;
 "||"                  return T_OR;
 
-{INT}"."{D0}+{EXP}?   { return T_DOUBLE_LITERAL; }
-{INT}{EXP}            { return T_DOUBLE_LITERAL; }
-{INT}                 { return T_INT_LITERAL; }
-\"([^"]|\\.)*\"       { return T_STRING_LITERAL; }
+{INT}"."{D0}+{EXP}?   { yylval.d = atof(yytext); return T_DOUBLE_LITERAL; }
+{INT}{EXP}            { yylval.d = atof(yytext); return T_DOUBLE_LITERAL; }
+{INT}                 { yylval.i = atoi(yytext); return T_INT_LITERAL; }
+\"([^"]|\\.)*\"       { yylval.s = strndup(&yytext[1], yyleng-2); return T_STRING_LITERAL; }
 
-{L}{LD}*              { return T_NAME; }
+{L}{LD}*              { yylval.s = strdup(yytext); return T_NAME; }
 
 {WS}                  /* ignore */
 "#"[^\n]*             /* ignore */
+
 .                     return yytext[0];
