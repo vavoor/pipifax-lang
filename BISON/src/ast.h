@@ -5,7 +5,7 @@
 #include "map.h"
 
 /* ******************* Types ************************** */
-enum { TY_VOID, TY_INT, TY_DOUBLE, TY_STRING, TY_ARRAY, TY_REF };
+enum { TY_VOID = 100, TY_INT, TY_DOUBLE, TY_STRING, TY_ARRAY, TY_REF };
 
 struct Type {
   int clazz;
@@ -24,7 +24,7 @@ struct RefType {
 };
 
 /* ******************* Expressions & LValues ************************** */
-enum { LV_NAMED, LV_INDEXED };
+enum { LV_NAMED = 200, LV_INDEXED };
 struct LValue {
   int clazz;
 };
@@ -32,6 +32,9 @@ struct LValue {
 struct NamedLValue {
   struct LValue super;
   const char* name;
+
+  struct Type* type;
+  struct Variable* variable;
 };
 
 struct IndexedLValue {
@@ -40,7 +43,7 @@ struct IndexedLValue {
   struct Expr* index;
 };
 
-enum { E_OR, E_AND, E_ADD, E_SUB, E_MUL, E_DIV,
+enum { E_OR = 300, E_AND, E_ADD, E_SUB, E_MUL, E_DIV,
   E_NOT, E_NEG, E_INT_CAST, E_DOUBLE_CAST,
   E_LE, E_LT, E_GE, E_GT, E_EQ, E_NE, E_CMP,
   E_CALL, E_LVALUE,
@@ -83,7 +86,7 @@ struct LiteralExpr {
 };
 
 /* ******************* Statements ************************** */
-enum { S_IF, S_WHILE, S_CALL, S_ASSIGN };
+enum { S_IF = 400, S_WHILE, S_CALL, S_ASSIGN };
 struct Stmt {
   int clazz;
 };
@@ -114,7 +117,7 @@ struct CallStmt {
 
 /* ******************* Variables ************************** */
 
-enum {V_GLOBAL, V_LOCAL, V_PARAMETER };
+enum { V_GLOBAL = 500, V_LOCAL, V_PARAMETER };
 struct Variable {
   int clazz;
   const char* name;
@@ -156,8 +159,7 @@ extern struct Type void_type;
 extern struct Program* program;
 struct Program* AstProgram(void);
 
-extern struct Function* function;
-struct Function* AstFunction(const char* name, List* params, struct Type* type);
+struct Function* AstFunction(const char* name, List* params, struct Type* type, List* stmts);
 
 struct Variable* AstGlobalVariable(const char* name, struct Type* type);
 struct Variable* AstLocalVariable(const char* name, struct Type* type);

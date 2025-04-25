@@ -11,6 +11,14 @@ struct Type void_type = { TY_VOID, 0};
 struct Program* program;
 struct Function* function;
 
+static void* alloc(size_t size)
+{
+  void* p = malloc(size);
+  assert(p != NULL);
+
+  return p;
+}
+
 struct Program* AstProgram(void)
 {
   struct Program* prog = malloc(sizeof(struct Program));
@@ -22,7 +30,7 @@ struct Program* AstProgram(void)
   return prog;
 }
 
-struct Function* AstFunction(const char* name, List* params, struct Type* type)
+struct Function* AstFunction(const char* name, List* params, struct Type* type, List* stmts)
 {
   struct Function* f = malloc(sizeof(struct Function));
   assert(f != NULL);
@@ -31,7 +39,7 @@ struct Function* AstFunction(const char* name, List* params, struct Type* type)
   f->type = type;
   f->params = params;
   f->locals = ListMake();
-  f->stmts = ListMake();
+  f->stmts = stmts;
 
   return f;
 }

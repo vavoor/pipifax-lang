@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "resolver.h"
 
 extern int yyparse(void);
 extern FILE* yyin;
@@ -20,6 +21,10 @@ int main(int argc, const char* argv[]) {
   }
 
   fclose(yyin);
+
+  if (resolve(program)) {
+    goto exit;
+  }
 
   return 0;
 

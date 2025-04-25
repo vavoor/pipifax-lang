@@ -10,8 +10,6 @@ static void enter_scope(void);
 static void exit_scope(void);
 static void* lookup(const char* kay);
 static void* insert(const char* key, void* value);
-
-List* scopes;
 %}
 
 %union {
@@ -26,6 +24,7 @@ List* scopes;
   struct Expr* expr;
   struct LValue* lval;
   struct Stmt* stmt;
+  struct Function* func;
 }
 
 %token T_FUNC T_VAR T_IF T_ELSE T_WHILE
@@ -40,8 +39,9 @@ List* scopes;
 %type<expr> expr or_expr and_expr cmp_expr add_expr mult_expr unary_expr value_expr call
 %type<lval> lvalue
 %type<l> opt_expr_list expr_list opt_param_list param_list block stmts_or_vars
-%type<var> param
+%type<var> local_var_decl param var_decl
 %type<stmt> stmt
+%type<func> func_def
 
 %start program
 
@@ -49,20 +49,21 @@ List* scopes;
 
 program
   : %empty
-    { program = AstProgram(); scopes = ListMake(); enter_scope(); }
+    { program = AstProgram(); }
   | program var_decl
+    { ListAppend(program->globals, $2); }
   | program func_def
+    { ListAppend(program->functions, $2); }
   ;
 
 var_decl
   : T_VAR T_NAME type
-    { struct Variable* v = AstGlobalVariable($2, $3); ListAppend(program->globals, v); }
+    { $$ = AstGlobalVariable($2, $3); }
   ;
 
 func_def
-  : T_FUNC T_NAME '(' opt_param_list ')' opt_type
-    { function = AstFunction($2, $4, $6); ListAppend(program->functions, function); }
-    block
+  : T_FUNC T_NAME '(' opt_param_list ')' opt_type block
+    { $$ = AstFunction($2, $4, $6, $7); }
   ;
 
 opt_param_list
@@ -100,12 +101,12 @@ stmts_or_vars
   | stmts_or_vars stmt
     { $$ = $1; ListAppend($$, $2); }
   | stmts_or_vars local_var_decl
-    { $$ = $1; }
+    { $$ = $1; ListAppend($$, $2); }
   ;
 
 local_var_decl
   : T_VAR T_NAME type
-    { struct Variable* v = AstLocalVariable($2, $3); ListAppend(function->locals, v); }
+    { $$ = AstLocalVariable($2, $3); }
   ;
 
 stmt
@@ -246,40 +247,4 @@ void yyerror(const char* msg)
   fprintf(stderr, "Line %d: %s\n", yylineno, msg);
 }
 
-static void enter_scope(void)
-{
-  ListPush(scopes, MapMake());
-}
-
-static void exit_scope(void)
-{
-  Map* m = ListPop(scopes);
-  if (m != NULL) {
-    MapDelete(m);
-  }
-}
-
-static void* lookup(const char* key)
-{
-  ListItor it;
-  ListIterator(scopes, &it);
-  while (ListHasMore(&it)) {
-    Map* m = ListNext(&it);
-    void* value = MapGet(m, key);
-    if (value != NULL) {
-      return value;
-    }
-  }
-  return NULL;
-}
-
-static void* insert(const char* key, void* value)
-{
-  Map* m = ListTop(scopes);
-  if (m != NULL) {
-    void* previous = MapPut(m, key, value);
-    return previous;
-  }
-  return NULL; /* TODO : is this correct? */
-}
 
