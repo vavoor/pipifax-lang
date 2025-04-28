@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "resolver.h"
 #include "types.h"
+#include "codegen.h"
 
 extern int yyparse(void);
 extern FILE* yyin;
@@ -30,6 +31,18 @@ int main(int argc, const char* argv[]) {
   if (check_types(program)) {
     goto exit;
   }
+
+  char fname[FILENAME_MAX];
+  sprintf(fname, "%s.s", argv[1]);
+  FILE* out = fopen(fname, "w");
+  if (out == NULL) {
+    fprintf(stderr, "Cannot open file %s for writing\n", fname);
+    goto exit;
+  }
+
+  gen_code(program, out);
+
+  fclose(out);
 
   return 0;
 

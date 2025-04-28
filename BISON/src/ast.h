@@ -127,6 +127,7 @@ struct Variable {
   int clazz;
   const char* name;
   struct Type* type;
+  int offset;
 };
 
 struct GlobalVariable {
