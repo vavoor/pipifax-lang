@@ -1,11 +1,11 @@
 #ifndef HEADER_6289681d_a70e_4cb3_ad91_d8dbea403c9c
 #define HEADER_6289681d_a70e_4cb3_ad91_d8dbea403c9c
 
-typedef struct _List List;
+typedef struct { void* dummy[3]; } List;
 typedef struct { void* dummy[2]; } ListItor;
 
-List* ListMake(void);
-void ListDelete(List* list);
+List* ListMake(List* list);
+void ListClear(List* list);
 void ListAppend(List* list, void* value);
 int ListSize(List* list);
 

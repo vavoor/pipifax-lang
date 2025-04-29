@@ -7,11 +7,11 @@ typedef struct _Pair {
   int hash;
 } Pair;
 
-typedef struct _Map Map;
+typedef struct { void* dummy[3]; } Map;
 typedef struct { void* dummy[2]; } MapItor;
 
-Map* MapMake(void);
-void MapDelete(Map* map);
+Map* MapMake(Map* map);
+void MapClear(Map* map);
 int MapSize(Map* map);
 
 void* MapPut(Map* map, const char* key, void* value, Pair* previous);

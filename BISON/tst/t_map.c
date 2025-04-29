@@ -5,7 +5,7 @@
 
 void test_inserts_and_lookups(void* pt)
 {
-  Map* m = MapMake();
+  Map* m = MapMake(NULL);
 
   const int N = 1000;
   int i;
@@ -29,7 +29,8 @@ void test_inserts_and_lookups(void* pt)
     free(t);
   }
 
-  MapDelete(m);
+  MapClear(m);
+  free(m);
 }
 
 int main()

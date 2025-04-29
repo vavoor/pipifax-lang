@@ -5,7 +5,7 @@
 
 void test_append_iterate(void* pt)
 {
-  List* l = ListMake();
+  List* l = ListMake(NULL);
   UT_EXPECT(ListSize(l) == 0, "New list is empty");
 
   int i;
@@ -28,12 +28,13 @@ void test_append_iterate(void* pt)
     i++;
   }
 
-  ListDelete(l);
+  ListClear(l);
+  free(l);
 }
 
 void test_stack_ops(void* pt)
 {
-  List* l = ListMake();
+  List* l = ListMake(NULL);
   int i;
   for (i = 0; i < 10; i++) {
     char scratch[256];
@@ -54,7 +55,9 @@ void test_stack_ops(void* pt)
   UT_EXPECT(ListSize(l) == 0, "List is empty");
   UT_EXPECT(ListTop(l) == NULL, "Top is empty");
   UT_EXPECT(ListPop(l) == NULL, "Pop returns NULL");
-  ListDelete(l);
+
+  ListClear(l);
+  free(l);
 }
 
 int main()

@@ -15,91 +15,101 @@ struct _List {
 };
 
 struct _ListItor {
-  List* list;
+  struct _List* list;
   struct _Element* element;
 };
 
-List* ListMake(void)
+List* ListMake(List* list)
 {
-  struct _List* list = malloc(sizeof(struct _List));
-  assert(list != NULL);
-  list->size = 0;
-  list->first = list->last = NULL;
-  return list;
+  assert(sizeof(List) >= sizeof(struct _List));
+  struct _List* l = (struct _List*) list;
+
+  if (l == NULL) {
+    l = malloc(sizeof(struct _List));
+    assert(l != NULL);
+  }
+
+  l->size = 0;
+  l->first = l->last = NULL;
+  return (List*) l;
 }
 
-void ListDelete(List* list)
+void ListClear(List* list)
 {
   assert(list != NULL);
+  struct _List* l = (struct _List*) list;
 
-  struct _Element* el = list->first;
+  struct _Element* el = l->first;
   while (el != NULL) {
     struct _Element* n = el->next;
     free(el);
     el = n;
   }
-  free(list);
 }
 
 void ListAppend(List* list, void* value)
 {
   assert(list != NULL);
+  struct _List* l = (struct _List*) list;
 
   struct _Element* el = malloc(sizeof(struct _Element));
   assert(el != NULL);
   el->next = NULL;
   el->value = value;
 
-  if (list->last == NULL) {
-    list->first = list->last = el;
+  if (l->last == NULL) {
+    l->first = l->last = el;
   }
   else {
-    list->last->next = el;
-    list->last = el;
+    l->last->next = el;
+    l->last = el;
   }
 
-  list->size++;
+  l->size++;
 }
 
 int ListSize(List* list)
 {
   assert(list != NULL);
-  return list->size;
+  struct _List* l = (struct _List*) list;
+  return l->size;
 }
 
 void ListPush(List* list, void* value)
 {
   assert(list != NULL);
+  struct _List* l = (struct _List*) list;
 
   struct _Element* el = malloc(sizeof(struct _Element));
   assert(el != NULL);
   el->next = NULL;
   el->value = value;
 
-  if (list->first == NULL) {
-    list->first = list->last = el;
+  if (l->first == NULL) {
+    l->first = l->last = el;
   }
   else {
-    el->next = list->first;
-    list->first = el;
+    el->next = l->first;
+    l->first = el;
   }
 
-  list->size++;
+  l->size++;
 }
 
 void* ListPop(List* list)
 {
   assert(list != NULL);
+  struct _List* l = (struct _List*) list;
 
-  if (list->first != NULL) {
-    struct _Element* el = list->first;
+  if (l->first != NULL) {
+    struct _Element* el = l->first;
     void* value = el->value;
-    list->first = el->next;
-    if (list->last == el) {
-      list->last = NULL;
+    l->first = el->next;
+    if (l->last == el) {
+      l->last = NULL;
     }
     free(el);
-    list->size--;
+    l->size--;
     return value;
   }
 
@@ -109,9 +119,10 @@ void* ListPop(List* list)
 void* ListTop(List* list)
 {
   assert(list != NULL);
+  struct _List* l = (struct _List*) list;
 
-  if (list->first != NULL) {
-    struct _Element* el = list->first;
+  if (l->first != NULL) {
+    struct _Element* el = l->first;
     return el->value;
   }
   return NULL;
@@ -124,8 +135,8 @@ void ListIterator(List* list, ListItor* itor)
   assert(sizeof(ListItor) >= sizeof(struct _ListItor));
 
   struct _ListItor* it = (struct _ListItor*) itor;
-  it->list = list;
-  it->element = list->first;
+  it->list = (struct _List*) list;
+  it->element = it->list->first;
 }
 
 int ListHasMore(ListItor* itor)

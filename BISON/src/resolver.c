@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "resolver.h"
 #include "map.h"
@@ -9,14 +10,15 @@ static Map* functions;
 
 static void enter_scope(void)
 {
-  ListPush(scopes, MapMake());
+  ListPush(scopes, MapMake(NULL));
 }
 
 static void exit_scope(void)
 {
   Map* m = ListPop(scopes);
   if (m != NULL) {
-    MapDelete(m);
+    MapClear(m);
+    free(m);
   }
 }
 
@@ -209,8 +211,8 @@ static int resolve_function(struct Function* function)
 int resolve(struct Program* program)
 {
   int errors = 0;
-  functions = MapMake();
-  scopes = ListMake();
+  functions = MapMake(NULL);
+  scopes = ListMake(NULL);
   enter_scope();
 
   ListItor it;
@@ -244,8 +246,10 @@ int resolve(struct Program* program)
   }
 
   exit_scope();
-  ListDelete(scopes);
-  MapDelete(functions);
+  ListClear(scopes);
+  free(scopes);
+  MapClear(functions);
+  free(functions);
 
   return errors;
 }

@@ -68,13 +68,13 @@ func_def
 
 opt_param_list
   : %empty
-    { $$ = ListMake(); }
+    { $$ = ListMake(NULL); }
   | param_list
   ;
 
 param_list
   : param
-    { $$ = ListMake(); ListAppend($$, $1); }
+    { $$ = ListMake(NULL); ListAppend($$, $1); }
   | param_list ',' param
     { $$ = $1; ListAppend($$, $3); }
   ;
@@ -97,7 +97,7 @@ block
 
 stmts_or_vars
   : %empty
-    { $$ = ListMake(); }
+    { $$ = ListMake(NULL); }
   | stmts_or_vars stmt
     { $$ = $1; ListAppend($$, $2); }
   | stmts_or_vars local_var_decl
@@ -111,7 +111,7 @@ local_var_decl
 
 stmt
   : T_IF expr block
-    { $$ = AstIfStmt($2, $3, ListMake()); }
+    { $$ = AstIfStmt($2, $3, ListMake(NULL)); }
   | T_IF expr block T_ELSE block
     { $$ = AstIfStmt($2, $3, $5); }
   | T_WHILE expr block
@@ -229,13 +229,13 @@ call
 
 opt_expr_list
   : %empty
-    { $$ = ListMake(); }
+    { $$ = ListMake(NULL); }
   | expr_list
   ;
 
 expr_list
   : expr
-    { $$ = ListMake(); ListAppend($$, $1); }
+    { $$ = ListMake(NULL); ListAppend($$, $1); }
   | expr_list ',' expr
     { $$ = $1; ListAppend($$, $3); }
   ;

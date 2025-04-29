@@ -56,6 +56,8 @@ enum { E_OR = 300, E_AND, E_ADD, E_SUB, E_MUL, E_DIV,
 struct Expr {
   int clazz;
   struct Type* type;
+
+  const char* reg;
 };
 
 struct BinaryExpr {
@@ -155,6 +157,9 @@ struct Function {
   List* params;
   List* locals;
   List* stmts;
+
+  int args_size;
+  int frame_size;
 };
 
 extern struct Type int_type;

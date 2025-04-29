@@ -25,8 +25,8 @@ struct Program* AstProgram(void)
   struct Program* prog = malloc(sizeof(struct Program));
   assert(prog != NULL);
 
-  prog->globals = ListMake();
-  prog->functions = ListMake();
+  prog->globals = ListMake(NULL);
+  prog->functions = ListMake(NULL);
 
   return prog;
 }
@@ -39,7 +39,7 @@ struct Function* AstFunction(const char* name, List* params, struct Type* type, 
   f->name = name;
   f->ret = AstParameter(name, type);
   f->params = params;
-  f->locals = ListMake();
+  f->locals = ListMake(NULL);
   f->stmts = stmts;
 
   return f;
