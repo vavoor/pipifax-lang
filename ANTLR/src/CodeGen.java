@@ -1,4 +1,3 @@
-
 class CodeGen extends PfxBaseVisitor<Void> {
 
   private AsmWriter asm;
