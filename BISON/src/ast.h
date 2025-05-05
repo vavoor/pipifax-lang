@@ -32,6 +32,8 @@ enum { LV_NAMED = 200, LV_INDEXED };
 struct LValue {
   int clazz;
   struct Type* type;
+
+  const char* reg;
 };
 
 struct NamedLValue {
