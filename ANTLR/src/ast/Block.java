@@ -13,6 +13,10 @@ public class Block extends Node {
     this.statements.add(stmt);
   }
 
+  public boolean isEmpty() {
+    return this.statements.size() == 0;
+  }
+
   @Override
   public int resolveFunctionNames(Map<String, Function> functions) {
     int errors = 0;

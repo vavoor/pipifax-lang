@@ -30,6 +30,7 @@ statementOrDeclaration
 statement
   : lvalue '=' expr   # AssignmentStmt
   | call              # CallStmt
+  | 'if' expr block ( 'else' block)?  # IfStmt
   ;
 
 lvalue

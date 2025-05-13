@@ -76,8 +76,16 @@ public class AsmWriter {
     instr("jal", name);
   }
 
+  public void j(String name) {
+    instr("j", name);
+  }
+
   public void ret() {
     instr("ret");
+  }
+
+  public void beqz(Registers.Register r, String label) {
+    instr("beqz", r.toString(), label);
   }
 
   public void instr(String op, String... args) {

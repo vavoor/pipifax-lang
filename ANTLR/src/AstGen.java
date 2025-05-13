@@ -70,16 +70,16 @@ public class AstGen extends PfxBaseVisitor<Node> {
       this.errors++;
     }
 
-    scopes.enter();
     this.locals = new ArrayList<LocalVariable>();
     Block block = (Block) ctx.block().accept(this);
+    
     scopes.leave();
-    scopes.leave();
-    return new Function(name, type, parameters, locals, block);
+    return new Function(name, type, parameters, this.locals, block);
   }
 
   @Override
   public Node visitBlock(PfxParser.BlockContext ctx) {
+    scopes.enter();
     Block block = new Block();
     for (PfxParser.StatementOrDeclarationContext s : ctx.statementOrDeclaration()) {
       Node n = s.accept(this);
@@ -88,6 +88,7 @@ public class AstGen extends PfxBaseVisitor<Node> {
         block.addStmt(stmt);
       }
     }
+    scopes.leave();
     return block;
   }
 
@@ -124,6 +125,20 @@ public class AstGen extends PfxBaseVisitor<Node> {
   public Node visitCallStmt(PfxParser.CallStmtContext ctx) {
     CallExpr call = (CallExpr) ctx.call().accept(this);
     return new CallStmt(call);
+  }
+
+  @Override
+  public Node visitIfStmt(PfxParser.IfStmtContext ctx) {
+    Expr cond = (Expr) ctx.expr().accept(this);
+    Block ifTrue = (Block) ctx.block(0).accept(this);
+    Block ifFalse;
+    if (ctx.block(1) != null) {
+      ifFalse = (Block) ctx.block(1).accept(this);
+    }
+    else {
+      ifFalse = new Block();
+    }
+    return new IfStmt(cond, ifTrue, ifFalse);
   }
 
   @Override
