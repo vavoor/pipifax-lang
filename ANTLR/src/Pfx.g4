@@ -31,6 +31,7 @@ statement
   : lvalue '=' expr   # AssignmentStmt
   | call              # CallStmt
   | 'if' expr block ( 'else' block)?  # IfStmt
+  | 'while' expr block # WhileStmt
   ;
 
 lvalue

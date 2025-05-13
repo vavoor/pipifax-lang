@@ -142,6 +142,13 @@ public class AstGen extends PfxBaseVisitor<Node> {
   }
 
   @Override
+  public Node visitWhileStmt(PfxParser.WhileStmtContext ctx) {
+    Expr cond = (Expr) ctx.expr().accept(this);
+    Block block = (Block) ctx.block().accept(this);
+    return new WhileStmt(cond, block);
+  }
+
+  @Override
   public Node visitCall(PfxParser.CallContext ctx) {
     String name = ctx.Name().getText();
     List<Expr> args = new ArrayList<>();

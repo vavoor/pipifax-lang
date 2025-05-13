@@ -49,7 +49,7 @@ public class IfStmt extends Statement {
     else {
       String lbl1 = Labels.label();
       String lbl2 = Labels.label();
-      asm.beqz(this.cond.reesult(), lbl1);
+      asm.beqz(this.cond.result(), lbl1);
       this.cond.result().release();
       this.ifTrue.generateCode(asm);
       asm.j(lbl2);
