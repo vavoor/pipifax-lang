@@ -53,10 +53,10 @@ ptype
   ;
 
 expr
-  : expr '+' expr   # AddExpr
-  | IntNumber       # IntLiteralExpr
-  | call            # CallExpr
-  | lvalue          # LValueExpr
+  : expr ('+' | '-') expr   # AdditiveExpr
+  | IntNumber               # IntLiteralExpr
+  | call                    # CallExpr
+  | lvalue                  # LValueExpr
   ;
 
 call

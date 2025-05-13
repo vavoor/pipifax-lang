@@ -160,10 +160,20 @@ public class AstGen extends PfxBaseVisitor<Node> {
   }
 
   @Override
-  public Node visitAddExpr(PfxParser.AddExprContext ctx) {
+  public Node visitAdditiveExpr(PfxParser.AdditiveExprContext ctx) {
     Expr left = (Expr) ctx.expr(0).accept(this);
     Expr right = (Expr) ctx.expr(1).accept(this);
-    return new AddExpr(left, right);
+    ArithmeticExpr e;
+    if (ctx.getChild(1).getText().equals("+")) {
+      e = new AddExpr(left, right);
+    }
+    else if (ctx.getChild(1).getText().equals("-")) {
+      e = new SubExpr(left, right);
+    }
+    else {
+      throw new RuntimeException("Unexpected operator");
+    }
+    return e;
   }
 
   @Override
