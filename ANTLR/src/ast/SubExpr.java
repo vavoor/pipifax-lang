@@ -3,8 +3,9 @@ package ast;
 import java.util.Map;
 import util.AsmWriter;
 
-public class AddExpr extends ArithmeticExpr {
-  public AddExpr(Expr left, Expr right) {
+public class SubExpr extends ArithmeticExpr {
+  
+  public SubExpr(Expr left, Expr right) {
     super(left, right);
   }
 
@@ -12,7 +13,7 @@ public class AddExpr extends ArithmeticExpr {
   public void generateCode(AsmWriter asm) {
     this.left.generateCode(asm);
     this.right.generateCode(asm);
-    asm.add(this.left.result(), this.left.result(), this.right.result());
+    asm.sub(this.left.result(), this.left.result(), this.right.result());
     this.register = this.left.result();
     this.right.result().release();
   }

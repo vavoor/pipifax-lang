@@ -68,6 +68,10 @@ public class AsmWriter {
     instr("addi", rd.toString(), rs.toString(), Integer.toString(val));
   }
 
+  public void sub(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
+    instr("sub", rd.toString(), rs.toString(), rt.toString());
+  }
+
   public void mul(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
     instr("mul", rd.toString(), rs.toString(), rt.toString());
   }
