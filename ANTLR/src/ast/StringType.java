@@ -1,27 +1,27 @@
 package ast;
 
-public class IntType extends Type {
-  private static Type instance = new IntType();
+public class StringType extends Type {
+  private static Type instance = new StringType();
 
-  private IntType() {}
+  private StringType() {}
 
   public static Type instance() {
     return instance;
   }
 
   public void call(Operation op) {
-    op.forInt();
+    op.forString();
   }
 
   public int size() {
     return 4;
   }
 
-  public boolean isInt() {
+  public boolean isString() {
     return true;
   }
 
   public boolean accepts(Type type) {
-    return type.isInt();
+    return type.isString();
   }
 }

@@ -76,6 +76,10 @@ public class AsmWriter {
     instr("mul", rd.toString(), rs.toString(), rt.toString());
   }
 
+  public void div(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
+    instr("div", rd.toString(), rs.toString(), rt.toString());
+  }
+
   public void jal(String name) {
     instr("jal", name);
   }

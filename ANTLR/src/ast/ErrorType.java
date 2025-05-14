@@ -5,6 +5,10 @@ public class ErrorType extends Type {
     return 0;
   }
 
+  public void call(Operation op) {
+    op.forError();
+  }
+
   public boolean accepts(Type type) {
     return false;
   }

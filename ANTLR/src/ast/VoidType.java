@@ -5,6 +5,10 @@ public class VoidType extends Type {
 
   private VoidType() {}
 
+  public void call(Operation op) {
+    op.forVoid();
+  }
+
   public static Type instance() {
     return instance;
   }

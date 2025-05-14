@@ -9,6 +9,10 @@ public class ArrayType extends Type {
     this.baseType = baseType;
   }
 
+  public void call(Operation op) {
+    op.forArray();
+  }
+
   public int size() {
     return this.dim * this.baseType.size();
   }
