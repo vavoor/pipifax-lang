@@ -3,10 +3,10 @@ package ast;
 import util.AsmWriter;
 import util.Registers;
 
-public class IntLiteralExpr extends Expr {
-  private int value;
+public class StringLiteralExpr extends Expr {
+  private String value;
 
-  public IntLiteralExpr(int value) {
+  public StringLiteralExpr(String value) {
     this.value = value;
     this.type = IntType.instance();
   }
@@ -14,6 +14,5 @@ public class IntLiteralExpr extends Expr {
   @Override
   public void generateCode(AsmWriter asm) {
     this.register = Registers.acquireGP();
-    asm.li(this.register, this.value);
   }
 }

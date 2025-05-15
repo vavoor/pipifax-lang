@@ -1,8 +1,5 @@
 package ast;
 
-import java.util.Map;
-import util.AsmWriter;
-
 public abstract class ArithmeticExpr extends BinaryExpr {
 
   public ArithmeticExpr(Expr left, Expr right) {
@@ -11,8 +8,8 @@ public abstract class ArithmeticExpr extends BinaryExpr {
 
   public int calculateAndCheckTypes() {
     int errors = this.left.calculateAndCheckTypes() + this.right.calculateAndCheckTypes();
-    if (this.left.type().isInt() && this.right.type().isInt()) {
-      this.type = IntType.instance();
+    if (this.left.type().isNumeric() && this.right.type().isNumeric()) {
+      this.type = this.left.type();
     }
     else {
       System.err.println("Incompatible types for arithmetic operation");

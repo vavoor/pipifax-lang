@@ -3,11 +3,11 @@ package ast;
 import util.Registers;
 
 public abstract class LValue extends Node {
-  protected Registers.Register address;
+  protected Registers.GPRegister address;
   
   public abstract Type type();
 
-  public Registers.Register address() {
+  public Registers.GPRegister address() {
     return this.address;
   }
 }

@@ -2,53 +2,59 @@ package util;
 
 public class Registers {
 
-  private static Register[] registers;
+  private static GPRegister[] gpregisters;
+  private static FPRegister[] fpregisters;
 
   static {
-    registers = new Register[]{
-      new Register("t0"),
-      new Register("t1"),
-      new Register("t2"),
-      new Register("t3"),
-      new Register("t4"),
-      new Register("t5"),
-      new Register("t6"),
-      new Register("s1"),
-      new Register("s2"),
-      new Register("s3"),
-      new Register("s4"),
-      new Register("s5"),
-      new Register("s6"),
-      new Register("s7"),
-      new Register("s8"),
-      new Register("s9"),
-      new Register("s10"),
-      new Register("s11")
+    gpregisters = new GPRegister[] {
+      new GPRegister("t0"),
+      new GPRegister("t1"),
+      new GPRegister("t2"),
+      new GPRegister("t3"),
+      new GPRegister("t4"),
+      new GPRegister("t5"),
+      new GPRegister("t6"),
+      new GPRegister("s1"),
+      new GPRegister("s2"),
+      new GPRegister("s3"),
+      new GPRegister("s4"),
+      new GPRegister("s5"),
+      new GPRegister("s6"),
+      new GPRegister("s7"),
+      new GPRegister("s8"),
+      new GPRegister("s9"),
+      new GPRegister("s10"),
+      new GPRegister("s11")
     };
+
+    fpregisters = new FPRegister[32];
+    for (int i = 0; i < 32; i++) {
+      fpregisters[i] = new FPRegister("f" + i);
+    }
   }
 
-  public static final Register zero = new Register("zero");
-  public static final Register fp = new Register("fp");
-  public static final Register ra = new Register("ra");
-  public static final Register sp = new Register("sp");
-  public static final Register a0 = new Register("a0");
-  public static final Register a1 = new Register("a1");
-  public static final Register a2 = new Register("a2");
-  public static final Register a3 = new Register("a3");
-  public static final Register a4 = new Register("a4");
-  public static final Register a5 = new Register("a5");
-  public static final Register a6 = new Register("a6");
-  public static final Register a7 = new Register("a7");
-  
+  public static final GPRegister zero = new GPRegister("zero");
+  public static final GPRegister fp = new GPRegister("fp");
+  public static final GPRegister ra = new GPRegister("ra");
+  public static final GPRegister sp = new GPRegister("sp");
+  public static final GPRegister a0 = new GPRegister("a0");
+  public static final GPRegister a1 = new GPRegister("a1");
+  public static final GPRegister a2 = new GPRegister("a2");
+  public static final GPRegister a3 = new GPRegister("a3");
+  public static final GPRegister a4 = new GPRegister("a4");
+  public static final GPRegister a5 = new GPRegister("a5");
+  public static final GPRegister a6 = new GPRegister("a6");
+  public static final GPRegister a7 = new GPRegister("a7");
+
   public static class Register {
-    private String name;
-    private boolean used;
-    
-    private Register(String name) {
+    protected String name;
+    protected boolean used;
+
+    protected Register(String name) {
       this.name = name;
       this.used = false;
     }
-    
+
     public String toString() {
       return this.name;
     }
@@ -58,14 +64,38 @@ public class Registers {
     }
   }
   
-  public static Register acquire() {
-    for (int i = 0; i < registers.length; i++) {
-      if (!registers[i].used) {
-        registers[i].used = true;
-        return registers[i];
+  public static class GPRegister extends Register {
+    
+    private GPRegister(String name) {
+      super(name);
+    }
+  }
+
+  public static class FPRegister extends Register {
+    private FPRegister(String name) {
+      super(name);
+    }
+  }
+  
+  public static GPRegister acquireGP() {
+    for (int i = 0; i < gpregisters.length; i++) {
+      if (!gpregisters[i].used) {
+        gpregisters[i].used = true;
+        return gpregisters[i];
       }
     }
-    System.err.println("Running out of registers");
+    System.err.println("Running out of general purpose registers");
+    return null;
+  }
+
+  public static FPRegister acquireFP() {
+    for (int i = 0; i < fpregisters.length; i++) {
+      if (!fpregisters[i].used) {
+        fpregisters[i].used = true;
+        return fpregisters[i];
+      }
+    }
+    System.err.println("Running out of floatingpoint purpose registers");
     return null;
   }
 }

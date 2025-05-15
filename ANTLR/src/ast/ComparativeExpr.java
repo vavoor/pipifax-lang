@@ -1,8 +1,5 @@
 package ast;
 
-import java.util.Map;
-import util.AsmWriter;
-
 public abstract class ComparativeExpr extends BinaryExpr {
 
   public ComparativeExpr(Expr left, Expr right) {

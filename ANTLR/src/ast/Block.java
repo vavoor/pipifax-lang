@@ -28,7 +28,7 @@ public class Block extends Node {
 
   @Override
   public int calculateAndCheckTypes() {
-     int errors = 0;
+    int errors = 0;
     for (Statement s : this.statements) {
       errors += s.calculateAndCheckTypes();
     }

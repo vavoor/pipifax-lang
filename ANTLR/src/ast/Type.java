@@ -2,7 +2,7 @@ package ast;
 
 public abstract class Type extends Node {
 
-  public static class Operation {
+  public abstract static class Operation {
     
     public void forInt() {
       throwNotImplemented();
@@ -17,6 +17,10 @@ public abstract class Type extends Node {
     }
 
     public void forArray() {
+      throwNotImplemented();
+    }
+
+    public void forReference() {
       throwNotImplemented();
     }
 
@@ -54,6 +58,10 @@ public abstract class Type extends Node {
   }
   
   public boolean isArray() {
+    return false;
+  }
+
+  public boolean isReference() {
     return false;
   }
 

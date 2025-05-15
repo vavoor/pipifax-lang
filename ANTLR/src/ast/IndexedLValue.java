@@ -41,7 +41,7 @@ public class IndexedLValue extends LValue {
   public void generateCode(AsmWriter asm) {
     this.index.generateCode(asm);
     
-    Registers.Register incr = Registers.acquire();
+    Registers.GPRegister incr = Registers.acquireGP();
     ArrayType a = (ArrayType) this.base.type();
     asm.li(incr, a.baseType().size());
     asm.mul(this.index.result(), this.index.result(), incr);
@@ -49,7 +49,7 @@ public class IndexedLValue extends LValue {
 
     this.base.generateCode(asm);
     asm.add(this.index.result(), this.base.address(), this.index.result());
-    this.address = this.index.result();
+    this.address = (Registers.GPRegister) this.index.result();
     this.base.address().release();
   }
 }

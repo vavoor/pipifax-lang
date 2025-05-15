@@ -1,28 +1,15 @@
 package ast;
 
-public class ArrayType extends Type {
+public class ArrayType extends BaseArrayType {
   private int dim;
-  private Type baseType;
   
   public ArrayType(int dim, Type baseType) {
+    super(baseType);
     this.dim = dim;
-    this.baseType = baseType;
-  }
-
-  public void call(Operation op) {
-    op.forArray();
   }
 
   public int size() {
     return this.dim * this.baseType.size();
-  }
-
-  public boolean isArray() {
-    return true;
-  }
-
-  public Type baseType() {
-    return this.baseType;
   }
 
   public boolean accepts(Type type) {

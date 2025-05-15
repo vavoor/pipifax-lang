@@ -10,8 +10,8 @@ public class GlobalVariable extends Variable {
   }
 
   @Override
-  public Registers.Register la(AsmWriter asm) {
-    Registers.Register address = Registers.acquire();
+  public Registers.GPRegister la(AsmWriter asm) {
+    Registers.GPRegister address = Registers.acquireGP();
     asm.la(address, this.mangledName());
     return address;
   }

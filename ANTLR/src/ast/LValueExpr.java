@@ -28,15 +28,23 @@ public class LValueExpr extends Expr {
   @Override
   public void generateCode(AsmWriter asm) {
     this.lvalue.generateCode(asm);
-    if (this.type.isInt()) {
-      this.register = this.lvalue.address();
-      asm.lw(this.register, this.register);
-    }
-    else if (this.type.isArray()) {
-      this.register = this.lvalue.address();
-    }
-    else {
-      throw new RuntimeException("Must not happend");
-    }
+    this.type.call(new Type.Operation() {
+      public void forInt() {
+        register = lvalue.address();
+        asm.lw(register, register);
+      }
+
+      public void forDouble() {
+        // TODO
+      }
+
+      public void forString() {
+        register = lvalue.address();
+      }
+
+      public void forArray() {
+        register = lvalue.address();
+      }
+    });
   }
 }

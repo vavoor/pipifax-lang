@@ -14,7 +14,14 @@ public class NamedLValue extends LValue {
   }
 
   public Type type() {
-    return this.variable.type();
+    Type t = this.variable.type();
+    if (t.isReference()) {
+      ReferenceType r = (ReferenceType) t;
+      return r.base();
+    }
+    else {
+      return t;
+    }
   }
 
   @Override

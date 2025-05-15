@@ -45,16 +45,34 @@ localVariable
   
 type
   : 'int'                   # IntType
+  | 'double'                # DoubleType
+  | 'string'                # StringType
   | '[' IntNumber ']' type  # ArrayType
   ;
 
 ptype
   : type
+  | refType
+  ;
+
+refType
+  : '*' '[' ']' type
   ;
 
 expr
-  : expr ('+' | '-') expr   # AdditiveExpr
+  : expr ('*' | '/') expr   # MultiplicativeExpr
+  | expr ('+' | '-') expr   # AdditiveExpr
+  | expr ('<' | '>' | '<=' | '>=' | '==' | '!=' | '<=>') expr  #ComparativeExpr
+  | expr '&&' expr    # AndExpr
+  | expr '||' expr    # OrExpr
+  | '!' expr          # NotExpr
+  | '-' expr          # NegExpr
+  | '(' 'int' ')' expr    # IntCastExpr
+  | '(' 'double' ')' expr # DoubleCastExpr
+  | '(' expr ')'          # BracketExpr
   | IntNumber               # IntLiteralExpr
+  | DoubleNumber            # DoubleLiteralExpr
+  | StringLiteral           # StringLiteralExpr
   | call                    # CallExpr
   | lvalue                  # LValueExpr
   ;
@@ -74,6 +92,11 @@ fragment
 Digit1
   : [1-9]
   ;
+
+fragment
+Exp
+  : [eE] ('+'|'-') Digit0+
+  ;
   
 fragment
 Letter
@@ -89,8 +112,16 @@ Name
   : Letter LetterOrDigit*
   ;
 
+DoubleNumber
+  : IntNumber ('.' Digit0+ Exp? | Exp)
+  ;
+  
 IntNumber
   : '0' | Digit1 Digit0*
+  ;
+
+StringLiteral
+  : '\'' (~[']|'\\' .)* '\''
   ;
 
 Comment

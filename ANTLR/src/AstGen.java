@@ -163,23 +163,122 @@ public class AstGen extends PfxBaseVisitor<Node> {
   public Node visitAdditiveExpr(PfxParser.AdditiveExprContext ctx) {
     Expr left = (Expr) ctx.expr(0).accept(this);
     Expr right = (Expr) ctx.expr(1).accept(this);
-    ArithmeticExpr e;
     if (ctx.getChild(1).getText().equals("+")) {
-      e = new AddExpr(left, right);
+      return new AddExpr(left, right);
     }
     else if (ctx.getChild(1).getText().equals("-")) {
-      e = new SubExpr(left, right);
+      return new SubExpr(left, right);
     }
     else {
       throw new RuntimeException("Unexpected operator");
     }
-    return e;
+  }
+
+  @Override
+  public Node visitMultiplicativeExpr(PfxParser.MultiplicativeExprContext ctx) {
+    Expr left = (Expr) ctx.expr(0).accept(this);
+    Expr right = (Expr) ctx.expr(1).accept(this);
+    if (ctx.getChild(1).getText().equals("*")) {
+      return new MultExpr(left, right);
+    }
+    else if (ctx.getChild(1).getText().equals("/")) {
+      return new DivExpr(left, right);
+    }
+    else {
+      throw new RuntimeException("Unexpected operator");
+    }
+  }
+
+  @Override
+  public Node visitComparativeExpr(PfxParser.ComparativeExprContext ctx) {
+    Expr left = (Expr) ctx.expr(0).accept(this);
+    Expr right = (Expr) ctx.expr(1).accept(this);
+    if (ctx.getChild(1).getText().equals("<")) {
+      return new LessThanExpr(left, right);
+    }
+    else if (ctx.getChild(1).getText().equals("<=")) {
+      return new LessOrEqualExpr(left, right);
+    }
+    else if (ctx.getChild(1).getText().equals(">")) {
+      return new GreaterThanExpr(left, right);
+    }
+    else if (ctx.getChild(1).getText().equals(">=")) {
+      return new GreaterOrEqualExpr(left, right);
+    }
+    else if (ctx.getChild(1).getText().equals("==")) {
+      return new EqualExpr(left, right);
+    }
+    else if (ctx.getChild(1).getText().equals("!=")) {
+      return new NotEqualExpr(left, right);
+    }
+    else if (ctx.getChild(1).getText().equals("<=>")) {
+      return new StringCompareExpr(left, right);
+    }
+    else {
+      throw new RuntimeException("Unexpected operator");
+    }
+  }
+
+  @Override
+  public Node visitAndExpr(PfxParser.AndExprContext ctx) {
+    Expr left = (Expr) ctx.expr(0).accept(this);
+    Expr right = (Expr) ctx.expr(1).accept(this);
+    return new AndExpr(left, right);
+  }
+  
+  @Override
+  public Node visitOrExpr(PfxParser.OrExprContext ctx) {
+    Expr left = (Expr) ctx.expr(0).accept(this);
+    Expr right = (Expr) ctx.expr(1).accept(this);
+    return new OrExpr(left, right);
+  }
+
+  @Override
+  public Node visitNotExpr(PfxParser.NotExprContext ctx) {
+    Expr expr = (Expr) ctx.expr().accept(this);
+    return new NotExpr(expr);
+  }
+
+  @Override
+  public Node visitNegExpr(PfxParser.NegExprContext ctx) {
+    Expr expr = (Expr) ctx.expr().accept(this);
+    return new NegExpr(expr);
+  }
+
+  @Override
+  public Node visitIntCastExpr(PfxParser.IntCastExprContext ctx) {
+    Expr expr = (Expr) ctx.expr().accept(this);
+    return new IntCastExpr(expr);
+  }
+
+  @Override
+  public Node visitDoubleCastExpr(PfxParser.DoubleCastExprContext ctx) {
+    Expr expr = (Expr) ctx.expr().accept(this);
+    return new DoubleCastExpr(expr);
+  }
+
+  @Override
+  public Node visitBracketExpr(PfxParser.BracketExprContext ctx) {
+    Expr expr = (Expr) ctx.expr().accept(this);
+    return expr;
   }
 
   @Override
   public Node visitIntLiteralExpr(PfxParser.IntLiteralExprContext ctx) {
     int value = Integer.parseInt(ctx.IntNumber().getText());
     return new IntLiteralExpr(value);
+  }
+
+  @Override
+  public Node visitDoubleLiteralExpr(PfxParser.DoubleLiteralExprContext ctx) {
+    double value = Double.parseDouble(ctx.DoubleNumber().getText());
+    return new DoubleLiteralExpr(value);
+  }
+
+  @Override
+  public Node visitStringLiteralExpr(PfxParser.StringLiteralExprContext ctx) {
+    String value = ctx.StringLiteral().getText();
+    return new StringLiteralExpr(value.substring(1, value.length() - 1));
   }
 
   @Override
@@ -197,6 +296,16 @@ public class AstGen extends PfxBaseVisitor<Node> {
   @Override
   public Node visitIntType(PfxParser.IntTypeContext ctx) {
     return IntType.instance();
+  }
+
+  @Override
+  public Node visitDoubleType(PfxParser.DoubleTypeContext ctx) {
+    return DoubleType.instance();
+  }
+
+  @Override
+  public Node visitStringType(PfxParser.StringTypeContext ctx) {
+    return StringType.instance();
   }
 
   @Override

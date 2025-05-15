@@ -82,7 +82,7 @@ public class CallExpr extends Expr {
     }
     Parameter ret = params.next();
     asm.jal(function.mangledName());
-    this.register = Registers.acquire();
+    this.register = Registers.acquireGP();
     if (this.type.isInt()) {
       asm.lw(this.register, ret.offset(), Registers.sp);
     }
