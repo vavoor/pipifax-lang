@@ -63,9 +63,12 @@ public class CallExpr extends Expr {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    // TODO : save registers in use
+    int savedRegisters = Registers.saveSpace();
     
-    asm.addi(Registers.sp, Registers.sp, -this.function.parametersSize());
+    asm.addi(Registers.sp, Registers.sp, -(this.function.parametersSize() + savedRegisters));
+
+    Registers.save(asm, this.function.parametersSize());
+    
     Iterator<Parameter> params = this.function.parameters().iterator();
     for (Expr expr : this.args) {
       Parameter param = params.next();
@@ -98,9 +101,10 @@ public class CallExpr extends Expr {
       asm.lw(this.register, ret.offset(), Registers.sp);
     }
     else if (this.type.isArray()) {
-      asm.addi(this.register, Registers.sp, ret.offset()); // TODO DANGEROUS!!!
+      asm.addi(this.register, Registers.sp, ret.offset());
     }
-      
-    asm.addi(Registers.sp, Registers.sp, this.function.parametersSize());
+
+    Registers.restore(asm, this.function.parametersSize());
+    asm.addi(Registers.sp, Registers.sp, this.function.parametersSize() + savedRegisters);
   }
 }

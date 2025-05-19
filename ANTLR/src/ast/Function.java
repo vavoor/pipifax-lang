@@ -53,22 +53,6 @@ public class Function extends Node {
     return this.block.calculateAndCheckTypes();
   }
 
-  public void allocateMemory() {
-    int offset = 0;
-    for (Parameter p : this.parameters) {
-      p.setOffset(offset);
-      offset += p.type().size();
-    }
-    this.paramsSize = offset;
-    
-    offset = 8; // for ra and fp
-    for (LocalVariable l : this.locals) {
-      offset += l.type().size();
-      l.setOffset(offset);
-    }
-    this.localsSize = offset;
-  }
-
   @Override
   public  void generateCode(AsmWriter asm) {
     asm.nl();
@@ -91,6 +75,22 @@ public class Function extends Node {
     asm.lw(Registers.ra, frameSize() - 4, Registers.sp);
     asm.addi(Registers.sp, Registers.sp, frameSize());
     asm.ret();
+  }
+
+  public void allocateMemory() {
+    int offset = 0;
+    for (Parameter p : this.parameters) {
+      p.setOffset(offset);
+      offset += p.type().size();
+    }
+    this.paramsSize = offset;
+    
+    offset = 8; // for ra and fp
+    for (LocalVariable l : this.locals) {
+      offset += l.type().size();
+      l.setOffset(offset);
+    }
+    this.localsSize = offset;
   }
 
   private int frameSize() {

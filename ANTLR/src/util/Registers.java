@@ -1,5 +1,8 @@
 package util;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Registers {
 
   private static GPRegister[] gpregisters;
@@ -50,7 +53,7 @@ public class Registers {
   public static final GPRegister a6 = new GPRegister("a6");
   public static final GPRegister a7 = new GPRegister("a7");
 
-  public static class Register {
+  public abstract static class Register {
     protected String name;
     protected boolean used;
 
@@ -66,6 +69,8 @@ public class Registers {
     public void release() {
       this.used = false;
     }
+
+    public abstract int size();
   }
   
   public static class GPRegister extends Register {
@@ -73,11 +78,19 @@ public class Registers {
     private GPRegister(String name) {
       super(name);
     }
+
+    public int size() {
+      return 4;
+    }
   }
 
   public static class FPRegister extends Register {
     private FPRegister(String name) {
       super(name);
+    }
+
+    public int size() {
+      return 8;
     }
   }
   
@@ -101,5 +114,65 @@ public class Registers {
     }
     System.err.println("Running out of floatingpoint purpose registers");
     return null;
+  }
+
+  public static int saveSpace() {
+    int size = 0;
+    
+    for (int i = 0; i < gpregisters.length; i++) {
+      Register r = gpregisters[i];
+      if (r.used) {
+        size += r.size();
+      }
+    }
+
+    for (int i = 0; i < fpregisters.length; i++) {
+      Register r = fpregisters[i];
+      if (r.used) {
+        size += r.size();
+      }
+    }
+
+    return size;
+  }
+  
+  public static void save(AsmWriter asm, int offset) {
+    int off = offset;
+    
+    for (int i = 0; i < gpregisters.length; i++) {
+      Register r = gpregisters[i];
+      if (r.used) {
+        asm.sw(r, off, sp);
+        off += r.size();
+      }
+    }
+
+    for (int i = 0; i < fpregisters.length; i++) {
+      Register r = fpregisters[i];
+      if (r.used) {
+        asm.fsw(r, off, sp);
+        off += r.size();
+      }
+    }
+  }
+
+  public static void restore(AsmWriter asm, int offset) {
+    int off = offset;
+    
+    for (int i = 0; i < gpregisters.length; i++) {
+      Register r = gpregisters[i];
+      if (r.used) {
+        asm.lw(r, off, sp);
+        off += r.size();
+      }
+    }
+
+    for (int i = 0; i < fpregisters.length; i++) {
+      Register r = fpregisters[i];
+      if (r.used) {
+        asm.flw(r, off, sp);
+        off += r.size();
+      }
+    }
   }
 }
