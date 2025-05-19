@@ -322,6 +322,12 @@ public class AstGen extends PfxBaseVisitor<Node> {
   }
 
   @Override
+  public Node visitRefType(PfxParser.RefTypeContext ctx) {
+    Type type = (Type) ctx.type().accept(this);
+    return new ReferenceType(new BaseArrayType(type));
+  }
+
+  @Override
   public Node visitNamedLValue(PfxParser.NamedLValueContext ctx) {
     String name = ctx.Name().getText();
     Variable v = this.scopes.lookup(name);

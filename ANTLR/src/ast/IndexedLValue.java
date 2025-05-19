@@ -14,7 +14,7 @@ public class IndexedLValue extends LValue {
   }
 
   public Type type() {
-    ArrayType a = (ArrayType) this.base.type();
+    BaseArrayType a = (BaseArrayType) this.base.type();
     return a.baseType();
   }
 
@@ -42,7 +42,7 @@ public class IndexedLValue extends LValue {
     this.index.generateCode(asm);
     
     Registers.GPRegister incr = Registers.acquireGP();
-    ArrayType a = (ArrayType) this.base.type();
+    BaseArrayType a = (BaseArrayType) this.base.type();
     asm.li(incr, a.baseType().size());
     asm.mul(this.index.result(), this.index.result(), incr);
     incr.release();
