@@ -118,16 +118,16 @@ public class Registers {
 
   public static int saveSpace() {
     int size = 0;
-    
-    for (int i = 0; i < gpregisters.length; i++) {
-      Register r = gpregisters[i];
+
+    for (int i = 0; i < fpregisters.length; i++) {
+      Register r = fpregisters[i];
       if (r.used) {
         size += r.size();
       }
     }
-
-    for (int i = 0; i < fpregisters.length; i++) {
-      Register r = fpregisters[i];
+    
+    for (int i = 0; i < gpregisters.length; i++) {
+      Register r = gpregisters[i];
       if (r.used) {
         size += r.size();
       }
@@ -138,14 +138,6 @@ public class Registers {
   
   public static void save(AsmWriter asm, int offset) {
     int off = offset;
-    
-    for (int i = 0; i < gpregisters.length; i++) {
-      Register r = gpregisters[i];
-      if (r.used) {
-        asm.sw(r, off, sp);
-        off += r.size();
-      }
-    }
 
     for (int i = 0; i < fpregisters.length; i++) {
       Register r = fpregisters[i];
@@ -154,23 +146,31 @@ public class Registers {
         off += r.size();
       }
     }
-  }
-
-  public static void restore(AsmWriter asm, int offset) {
-    int off = offset;
     
     for (int i = 0; i < gpregisters.length; i++) {
       Register r = gpregisters[i];
       if (r.used) {
-        asm.lw(r, off, sp);
+        asm.sw(r, off, sp);
         off += r.size();
       }
     }
+  }
+
+  public static void restore(AsmWriter asm, int offset) {
+    int off = offset;
 
     for (int i = 0; i < fpregisters.length; i++) {
       Register r = fpregisters[i];
       if (r.used) {
         asm.flw(r, off, sp);
+        off += r.size();
+      }
+    }
+    
+    for (int i = 0; i < gpregisters.length; i++) {
+      Register r = gpregisters[i];
+      if (r.used) {
+        asm.lw(r, off, sp);
         off += r.size();
       }
     }
