@@ -35,16 +35,24 @@ public class Assignment extends Statement {
     this.rhs.generateCode(asm);
     this.lvalue.generateCode(asm);
 
-    if (this.rhs.type().isInt()) {
-      asm.sw(this.rhs.result(), this.lvalue.address());
-    }
-    else if (this.rhs.type().isArray()) {
-      asm.memcpy(this.lvalue.address(), this.rhs.result(), this.rhs.type().size());
-    }
-    else {
-      throw new RuntimeException("Must not happen");
-    }
-    
+    this.rhs.type().call(new Type.Operation() {
+      public void forInt() {
+        asm.sw(rhs.result(), lvalue.address());
+      }
+
+      public void forDouble() {
+        asm.fsw(rhs.result(), lvalue.address());
+      }
+
+      public void forString() {
+        asm.sw(rhs.result(), lvalue.address());
+      }
+
+      public void forArray() {
+        asm.memcpy(lvalue.address(), rhs.result(), rhs.type().size());
+      }
+    });
+
     this.rhs.result().release();
     this.lvalue.address().release();
   }

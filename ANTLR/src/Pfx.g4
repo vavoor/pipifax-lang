@@ -95,7 +95,7 @@ Digit1
 
 fragment
 Exp
-  : [eE] ('+'|'-') Digit0+
+  : [eE] ('+'|'-')? Digit0+
   ;
   
 fragment
@@ -121,7 +121,7 @@ IntNumber
   ;
 
 StringLiteral
-  : '\'' (~[']|'\\' .)* '\''
+  : '"' (~["]|'\\' .)* '"'
   ;
 
 Comment

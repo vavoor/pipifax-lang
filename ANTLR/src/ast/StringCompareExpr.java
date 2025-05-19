@@ -1,6 +1,7 @@
 package ast;
 
 import util.AsmWriter;
+import util.Registers;
 
 public class StringCompareExpr extends BinaryExpr {
 
@@ -26,7 +27,10 @@ public class StringCompareExpr extends BinaryExpr {
     // TODO
     this.left.generateCode(asm);
     this.right.generateCode(asm);
-    asm.add(this.left.result(), this.left.result(), this.right.result());
+    asm.mv(Registers.a0, this.left.result());
+    asm.mv(Registers.a1, this.right.result());
+    asm.jal("__strcmp");
+    asm.mv(this.left.result(), Registers.a0);
     this.register = this.left.result();
     this.right.result().release();
   }

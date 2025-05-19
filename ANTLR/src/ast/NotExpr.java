@@ -24,8 +24,8 @@ public class NotExpr extends UnaryExpr {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    // TODO
     this.expr.generateCode(asm);
+    asm.not(this.expr.result(), this.expr.result());
     this.register = this.expr.result();
   }
 }

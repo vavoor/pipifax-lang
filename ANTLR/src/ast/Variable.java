@@ -34,5 +34,5 @@ public abstract class Variable extends Node {
     return this.offset;
   }
 
-  public abstract Registers.GPRegister la(AsmWriter asm);
+  public abstract Registers.Register la(AsmWriter asm);
 }

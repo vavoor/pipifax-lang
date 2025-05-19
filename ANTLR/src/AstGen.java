@@ -13,6 +13,8 @@ public class AstGen extends PfxBaseVisitor<Node> {
   private List<GlobalVariable> globals = new ArrayList<>();
   private List<LocalVariable> locals;
   private List<Function> functions = new ArrayList<>();
+  private List<DoubleLiteralExpr> doubles = new ArrayList<>();
+  private List<StringLiteralExpr> strings = new ArrayList<>();
 
   @Override
   public Node visitProgram(PfxParser.ProgramContext ctx) {
@@ -30,7 +32,7 @@ public class AstGen extends PfxBaseVisitor<Node> {
 
     scopes.leave();
     
-    return new Program(globals, functions);
+    return new Program(globals, functions, doubles, strings);
   }
 
   @Override
@@ -272,13 +274,17 @@ public class AstGen extends PfxBaseVisitor<Node> {
   @Override
   public Node visitDoubleLiteralExpr(PfxParser.DoubleLiteralExprContext ctx) {
     double value = Double.parseDouble(ctx.DoubleNumber().getText());
-    return new DoubleLiteralExpr(value);
+    DoubleLiteralExpr d = new DoubleLiteralExpr(value);
+    doubles.add(d);
+    return d;
   }
 
   @Override
   public Node visitStringLiteralExpr(PfxParser.StringLiteralExprContext ctx) {
     String value = ctx.StringLiteral().getText();
-    return new StringLiteralExpr(value.substring(1, value.length() - 1));
+    StringLiteralExpr s = new StringLiteralExpr(value.substring(1, value.length() - 1));
+    strings.add(s);
+    return s;
   }
 
   @Override

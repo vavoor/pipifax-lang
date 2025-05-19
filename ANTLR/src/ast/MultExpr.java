@@ -12,7 +12,15 @@ public class MultExpr extends ArithmeticExpr {
   public void generateCode(AsmWriter asm) {
     this.left.generateCode(asm);
     this.right.generateCode(asm);
-    asm.mul(this.left.result(), this.left.result(), this.right.result());
+    this.left.type().call(new Type.Operation() {
+      public void forInt() {
+        asm.mul(left.result(), left.result(), right.result());
+      }
+
+      public void forDouble() {
+        asm.fmul(left.result(), left.result(), right.result());
+      }
+    });
     this.register = this.left.result();
     this.right.result().release();
   }

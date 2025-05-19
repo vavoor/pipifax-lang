@@ -1,6 +1,7 @@
 package ast;
 
 import util.AsmWriter;
+import util.Registers;
 
 public class IntCastExpr extends UnaryExpr {
 
@@ -24,8 +25,9 @@ public class IntCastExpr extends UnaryExpr {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    // TODO
     this.expr.generateCode(asm);
-    this.register = this.expr.result();
+    this.register = Registers.acquireGP();
+    asm.dtoi(this.register, this.expr.result());
+    this.expr.result().release();
   }
 }

@@ -1,6 +1,8 @@
 package ast;
 
 import util.AsmWriter;
+import util.Registers;
+import util.Labels;
 
 public class AndExpr extends LogicalExpr {
 
@@ -10,10 +12,14 @@ public class AndExpr extends LogicalExpr {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    // TODO
+    String lbl = Labels.label();
+    
     this.left.generateCode(asm);
+    asm.sltu(this.left.result(), Registers.zero, this.left.result());
+    asm.beqz(this.left.result(), lbl);
     this.right.generateCode(asm);
-    asm.add(this.left.result(), this.left.result(), this.right.result());
+    asm.sltu(this.left.result(), Registers.zero, this.right.result());
+    asm.label(lbl);
     this.register = this.left.result();
     this.right.result().release();
   }

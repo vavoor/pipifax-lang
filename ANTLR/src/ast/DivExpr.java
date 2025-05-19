@@ -12,7 +12,15 @@ public class DivExpr extends ArithmeticExpr {
   public void generateCode(AsmWriter asm) {
     this.left.generateCode(asm);
     this.right.generateCode(asm);
-    asm.div(this.left.result(), this.left.result(), this.right.result());
+    this.left.type().call(new Type.Operation() {
+      public void forInt() {
+        asm.div(left.result(), left.result(), right.result());
+      }
+
+      public void forDouble() {
+        asm.fdiv(left.result(), left.result(), right.result());
+      }
+    });
     this.register = this.left.result();
     this.right.result().release();
   }

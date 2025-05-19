@@ -35,7 +35,9 @@ public class LValueExpr extends Expr {
       }
 
       public void forDouble() {
-        // TODO
+        register = Registers.acquireFP();
+        asm.flw(register, lvalue.address());
+        lvalue.address().release();
       }
 
       public void forString() {

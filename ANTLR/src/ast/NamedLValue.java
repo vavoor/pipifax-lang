@@ -26,7 +26,14 @@ public class NamedLValue extends LValue {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    this.address = this.variable.la(asm);
+    Type t = this.variable.type();
+    if (t.isReference()) {
+      this.address = this.variable.la(asm);
+      asm.lw(this.address, this.address);
+    }
+    else {
+      this.address = this.variable.la(asm);
+    }
   }
 
   public Variable variable() {

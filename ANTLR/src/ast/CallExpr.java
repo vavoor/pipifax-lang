@@ -63,6 +63,9 @@ public class CallExpr extends Expr {
 
   @Override
   public void generateCode(AsmWriter asm) {
+    // TODO : save registers in use
+    // TODO : deal with references
+    
     asm.addi(Registers.sp, Registers.sp, -this.function.parametersSize());
     Iterator<Parameter> params = this.function.parameters().iterator();
     for (Expr expr : this.args) {

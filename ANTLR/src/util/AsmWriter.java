@@ -59,6 +59,50 @@ public class AsmWriter {
   public void sw(Registers.Register r, Registers.Register ra) {
     sw(r, 0, ra);
   }
+  
+  public void fsw(Registers.Register r, int offset, Registers.Register ra) {
+    instr("fsw", r.toString(), offset(offset,ra));
+  }
+
+  public void fsw(Registers.Register r, Registers.Register ra) {
+    fsw(r, 0, ra);
+  }
+
+  public void flw(Registers.Register r, int offset, Registers.Register ra) {
+    instr("flw", r.toString(), offset(offset,ra));
+  }
+
+  public void flw(Registers.Register r, Registers.Register ra) {
+    flw(r, 0, ra);
+  }
+
+  public void slt(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
+    instr("slt", rd.toString(), rs.toString(), rt.toString());
+  }
+
+  public void sltu(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
+    instr("sltu", rd.toString(), rs.toString(), rt.toString());
+  }
+
+  public void slti(Registers.Register rd, Registers.Register rs, int imm) {
+    instr("slti", rd.toString(), rs.toString(), Integer.toString(imm));
+  }
+
+  public void sltiu(Registers.Register rd, Registers.Register rs, int imm) {
+    instr("sltiu", rd.toString(), rs.toString(), Integer.toString(imm));
+  }
+
+  public void feq(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
+    instr("feq.d", rd.toString(), rs.toString(), rt.toString());
+  }
+
+  public void flt(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
+    instr("flt.d", rd.toString(), rs.toString(), rt.toString());
+  }
+
+  public void fle(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
+    instr("fle.d", rd.toString(), rs.toString(), rt.toString());
+  }
 
   public void add(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
     instr("add", rd.toString(), rs.toString(), rt.toString());
@@ -92,8 +136,60 @@ public class AsmWriter {
     instr("ret");
   }
 
+  public void beq(Registers.Register rs, Registers.Register rt, String label) {
+    instr("beq", rs.toString(), rt.toString(), label);
+  }
+
+  public void bne(Registers.Register rs, Registers.Register rt, String label) {
+    instr("bne", rs.toString(), rt.toString(), label);
+  }
+
+  public void blt(Registers.Register rs, Registers.Register rt, String label) {
+    instr("blt", rs.toString(), rt.toString(), label);
+  }
+  
   public void beqz(Registers.Register r, String label) {
     instr("beqz", r.toString(), label);
+  }
+
+  public void bnez(Registers.Register r, String label) {
+    instr("bnez", r.toString(), label);
+  }
+
+  public void fadd(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
+    instr("fadd.d", rd.toString(), rs.toString(), rt.toString());
+  }
+
+  public void fsub(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
+    instr("fsub.d", rd.toString(), rs.toString(), rt.toString());
+  }
+
+  public void fmul(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
+    instr("fmul.d", rd.toString(), rs.toString(), rt.toString());
+  }
+
+  public void fdiv(Registers.Register rd, Registers.Register rs, Registers.Register rt) {
+    instr("fdiv.d", rd.toString(), rs.toString(), rt.toString());
+  }
+
+  public void not(Registers.Register rd, Registers.Register rs) {
+    instr("not", rd.toString(), rs.toString());
+  }
+
+  public void neg(Registers.Register rd, Registers.Register rs) {
+    instr("neg", rd.toString(), rs.toString());
+  }
+
+  public void fneg(Registers.Register rd, Registers.Register rs) {
+    instr("fneg.d", rd.toString(), rs.toString());
+  }
+
+  public void dtoi(Registers.Register rd, Registers.Register rs) {
+    instr("fcvt.w.d", rd.toString(), rs.toString());
+  }
+
+  public void itod(Registers.Register rd, Registers.Register rs) {
+    instr("fcvt.d.w", rd.toString(), rs.toString());
   }
 
   public void instr(String op, String... args) {
@@ -141,5 +237,26 @@ public class AsmWriter {
   "\taddi a1,a1,4\n" +
   "\tsw a3,0(a0)\n" +
   "\taddi a0,a0,4\n" +
-  "\tj __memcpy\n";
+  "\tj __memcpy\n" +
+  "\n" +
+  "__strcmp:\n" +
+  "\tbeq a0,a1,__strcmp_2\n" +
+  "__strcmp_1:\n" +
+  "\tlb a2,0(a0)\n" +
+  "\tlb a3,0(a1)\n" +
+  "\taddi a0,a0,1\n" +
+  "\taddi a1,a1,1\n" +
+  "\tblt a2,a3,__strcmp_3\n" +
+  "\tblt a3,a2,__strcmp_4\n" +
+  "\tbnez a0,__strcmp_1\n" +
+  "__strcmp_2:\n" +
+  "\tmv a0,zero\n" +
+  "\tret\n" +
+  "__strcmp_3:\n" +
+  "\tli a0,-1\n" +
+  "\tret\n" +
+  "__strcmp_4:\n" +
+  "\tli a0,1\n" +
+  "\tret\n"
+  ;
 }

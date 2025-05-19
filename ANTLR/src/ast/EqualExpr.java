@@ -1,6 +1,7 @@
 package ast;
 
 import util.AsmWriter;
+import util.Registers;
 
 public class EqualExpr extends ComparativeExpr {
 
@@ -10,11 +11,23 @@ public class EqualExpr extends ComparativeExpr {
 
   @Override
   public void generateCode(AsmWriter asm) {
-    // TODO
     this.left.generateCode(asm);
     this.right.generateCode(asm);
-    asm.add(this.left.result(), this.left.result(), this.right.result());
-    this.register = this.left.result();
+
+    this.register = Registers.acquireGP();
+
+    this.left.type().call(new Type.Operation() {
+      public void forInt() {
+        asm.sub(register, left.result(), right.result());
+        asm.sltiu(register, register, 1); // == seqz
+      }
+
+      public void forDouble() {
+        asm.feq(register, left.result(), right.result());
+      }
+    });
+    
+    this.left.result().release();
     this.right.result().release();
   }
 }

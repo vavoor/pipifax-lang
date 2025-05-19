@@ -26,6 +26,15 @@ public class NegExpr extends UnaryExpr {
   public void generateCode(AsmWriter asm) {
     // TODO
     this.expr.generateCode(asm);
+    this.expr.type().call(new Type.Operation() {
+      public void forInt() {
+        asm.neg(expr.result(),expr.result());
+      }
+
+      public void forDouble() {
+        asm.fneg(expr.result(),expr.result());
+      }
+    });
     this.register = this.expr.result();
   }
 }

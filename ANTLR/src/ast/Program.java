@@ -10,10 +10,15 @@ public class Program extends Node {
   
   private Collection<GlobalVariable> variables;
   private Collection<Function> functions;
+  private Collection<DoubleLiteralExpr> doubles;
+  private Collection<StringLiteralExpr> strings;
 
-  public Program(Collection<GlobalVariable> variables, Collection<Function> functions) {
+  public Program(Collection<GlobalVariable> variables, Collection<Function> functions,
+      Collection<DoubleLiteralExpr> doubles, Collection<StringLiteralExpr> strings) {
     this.variables = variables;
     this.functions = functions;
+    this.doubles = doubles;
+    this.strings = strings;
   }
 
   public int resolveFunctionNames() {
@@ -68,6 +73,12 @@ public class Program extends Node {
     }
     
     asm.dataSection();
+    for (DoubleLiteralExpr d : this.doubles) {
+      asm.println(d.id() + ":\t.double " + d.value());
+    }
+    for (StringLiteralExpr s : this.strings) {
+      asm.println(s.id() + ":\t.asciz \"" + s.value() + "\"");
+    }
     for (GlobalVariable v : this.variables) {
       v.generateCode(asm);
     }

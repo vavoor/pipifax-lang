@@ -39,6 +39,7 @@ public class Block extends Node {
   public void generateCode(AsmWriter asm) {
     for (Statement s : this.statements) {
       s.generateCode(asm);
+      asm.nl();
     }
   }
 }

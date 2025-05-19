@@ -9,7 +9,7 @@ public abstract class ComparativeExpr extends BinaryExpr {
   public int calculateAndCheckTypes() {
     int errors = this.left.calculateAndCheckTypes() + this.right.calculateAndCheckTypes();
     if (this.left.type().isNumeric() && this.right.type().isNumeric()) {
-      this.type = this.left.type();
+      this.type = IntType.instance();
     }
     else {
       System.err.println("Incompatible types for comparative operation");
