@@ -17,9 +17,6 @@ public abstract class Node {
     return 0;
   }
 
-  public void allocateMemory() {
-  }
-  
   public void generateCode(AsmWriter asm) {
   }
 }

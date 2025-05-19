@@ -53,7 +53,6 @@ public class Function extends Node {
     return this.block.calculateAndCheckTypes();
   }
 
-  @Override
   public void allocateMemory() {
     int offset = 0;
     for (Parameter p : this.parameters) {

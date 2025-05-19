@@ -53,14 +53,12 @@ public class Program extends Node {
   }
 
   @Override
-  public void allocateMemory() {
+  public void generateCode(AsmWriter asm) {
+
     for (Function f : this.functions) {
       f.allocateMemory();
     }
-  }
-  
-  @Override
-  public void generateCode(AsmWriter asm) {
+    
     asm.textSection();
     asm.jal("f_main");
     asm.instr("li a7,10");

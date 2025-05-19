@@ -49,8 +49,6 @@ class Pfxc {
         throw new CompileError();
       }
 
-      program.allocateMemory();
-
       AsmWriter asm = new AsmWriter(baseName() + ".s");
       program.generateCode(asm);
       
