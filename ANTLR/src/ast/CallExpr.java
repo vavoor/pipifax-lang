@@ -64,23 +64,31 @@ public class CallExpr extends Expr {
   @Override
   public void generateCode(AsmWriter asm) {
     // TODO : save registers in use
-    // TODO : deal with references
     
     asm.addi(Registers.sp, Registers.sp, -this.function.parametersSize());
     Iterator<Parameter> params = this.function.parameters().iterator();
     for (Expr expr : this.args) {
       Parameter param = params.next();
       expr.generateCode(asm);
-      if (expr.type().isInt()) {
-        asm.sw(expr.result(), param.offset(), Registers.sp);
-      }
-      else if (expr.type().isArray()) {
-        asm.addi(Registers.a0, Registers.sp, param.offset());
-        asm.memcpy(Registers.a0, expr.result(), expr.type().size());
-      }
-      else {
-        throw new RuntimeException("Must not happend");
-      }
+      param.type().call(new Type.Operation() {
+        public void forInt() {
+          asm.sw(expr.result(), param.offset(), Registers.sp);
+        }
+        public void forDouble() {
+          asm.fsw(expr.result(), param.offset(), Registers.sp);
+        }
+        public void forString() {
+          asm.sw(expr.result(), param.offset(), Registers.sp);
+        }
+        public void forArray() {
+          asm.addi(Registers.a0, Registers.sp, param.offset());
+          asm.memcpy(Registers.a0, expr.result(), expr.type().size());
+        }
+        public void forReference() {
+          asm.sw(expr.result(), param.offset(), Registers.sp);
+        }
+      });
+      
       expr.result().release();
     }
     Parameter ret = params.next();

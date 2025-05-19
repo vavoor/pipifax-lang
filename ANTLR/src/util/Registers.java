@@ -24,7 +24,11 @@ public class Registers {
       new GPRegister("s8"),
       new GPRegister("s9"),
       new GPRegister("s10"),
-      new GPRegister("s11")
+      new GPRegister("s11"),
+      new GPRegister("a4"),
+      new GPRegister("a5"),
+      new GPRegister("a6"),
+      new GPRegister("a7")
     };
 
     fpregisters = new FPRegister[32];
