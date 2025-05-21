@@ -96,13 +96,32 @@ public class CallExpr extends Expr {
     }
     Parameter ret = params.next();
     asm.jal(function.mangledName());
-    this.register = Registers.acquireGP();
-    if (this.type.isInt()) {
-      asm.lw(this.register, ret.offset(), Registers.sp);
-    }
-    else if (this.type.isArray()) {
-      asm.addi(this.register, Registers.sp, ret.offset());
-    }
+    
+    this.type.call(new Type.Operation() {
+      public void forInt() {
+        register = Registers.acquireGP();
+        asm.lw(register, ret.offset(), Registers.sp);
+      }
+
+      public void forDouble() {
+        register = Registers.acquireFP();
+        asm.flw(register, ret.offset(), Registers.sp);
+      }
+      
+      public void forString() {
+        register = Registers.acquireGP();
+        asm.lw(register, ret.offset(), Registers.sp);
+      }
+
+      public void forArray() {
+        register = Registers.acquireGP();
+        asm.addi(register, Registers.sp, ret.offset());
+      }
+
+      public void forVoid() {
+        register = Registers.acquireGP();
+      }
+    });
 
     Registers.restore(asm, this.function.parametersSize());
     asm.addi(Registers.sp, Registers.sp, this.function.parametersSize() + savedRegisters);
